@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Contact;
 use App\Models\Jiri;
 use App\Models\Project;
 
@@ -144,10 +145,12 @@ it('verifies that the obligations are respected', function () {
     $jiris = Jiri::factory()->create();
 
     //act
-
+$response = $this->get('jiris/' . $jiris->first()->id);
 
     //assert
     $response->assertStatus(200);
+$response->assertValid();
+
 
 });
 
