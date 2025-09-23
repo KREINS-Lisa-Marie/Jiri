@@ -152,6 +152,17 @@ $response = $this->get('jiris/' . $jiris->first()->id);
 $response->assertValid();
 
 
+
+    //arrange
+    $contacts = Contact::factory()->create();
+
+    //act
+    $response = $this->get('contacts/');
+
+    //assert
+    $response->assertStatus(200);
+    $response->assertValid();
+
 });
 
 
