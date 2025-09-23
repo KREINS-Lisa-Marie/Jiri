@@ -18,4 +18,10 @@ class ProjectController extends Controller
         Project::create(request()->all());
         return redirect()->route('projects.index');
     }
+
+    public function show(Project $project)
+    {
+        $projects = Project::all();
+        return View('projects.show', compact('projects'));
+    }
 }

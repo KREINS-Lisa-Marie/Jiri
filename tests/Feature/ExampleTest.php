@@ -151,6 +151,17 @@ it('verifies that by clicking on a Jirilink, a user is redirected to the page of
 
 
 
+it('verifies that by clicking on a Projectlink, a user is redirected to the page of the Project', function () {
+    //arrange
+    $projects = Project::factory(3)->create();
+
+    //act
+    $response = $this->get('projects/' . $projects->first()->id);
+
+    //assert
+    $response->assertStatus(200);
+    $response->assertSee($projects->first()->name, false);
+});
 
 
 
