@@ -137,6 +137,20 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
 });
 
 
+it('verifies that by clicking on a Jirilink, a user is redirected to the page of the Jiri', function () {
+    //arrange
+    $contacts = Contact::factory(3)->create();
+
+    //act
+    $response = $this->get('contacts/' . $contacts->first()->id);
+
+    //assert
+    $response->assertStatus(200);
+    $response->assertSee($contacts->first()->name, false);
+});
+
+
+
 
 
 
