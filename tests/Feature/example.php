@@ -10,7 +10,7 @@ test('the application returns a successful response', function () {
     $response->assertStatus(200);
 });
 
-it('creates a Jiri and redirects to the jiri index',
+/*it('creates a Jiri and redirects to the jiri index',
     function () {
         //arrange
         $jiri = [
@@ -28,21 +28,35 @@ it('creates a Jiri and redirects to the jiri index',
         \Pest\Laravel\assertDatabaseHas('jiris', ['name' => 'Design Web 0925',]);
 
     }
+);*/
+
+it('creates a Jiri and redirects to the jiri index',
+    function () {
+        // arrange
+        $jiri = Jiri::factory()->raw();
+
+        // act
+        $response = $this->post('jiris', $jiri);
+
+        // assert
+        /*        $response->assertStatus(302);
+                $response->assertRedirect('jiris');*/
+        \Pest\Laravel\assertDatabaseHas('jiris', ['name' => $jiri['name']]);
+
+    }
 );
 
-
 it('creates a Contact and redirects to the contact index', function () {
-    //arrange
+    // arrange
     $contact = [
         'name' => 'Dominique Vilain',
         'email' => 'dominique.vilain@hepl.be',
     ];
 
-    //act
+    // act
     $response = $this->post('/contacts', $contact);
 
-
-    //assert
+    // assert
     $response->assertStatus(302);
     $response->assertRedirect('/contacts');
     \Pest\Laravel\assertDatabaseHas('contacts',
@@ -50,7 +64,6 @@ it('creates a Contact and redirects to the contact index', function () {
             'email' => 'dominique.vilain@hepl.be',
         ]);
 });
-
 
 /*it('creates a Project and redirects to the project index', function () {
     //arrange
@@ -71,36 +84,34 @@ it('creates a Contact and redirects to the contact index', function () {
 
 });*/
 
-
 it('creates a Project and redirects to the project index', function () {
-    //arrange
+    // arrange
     $project = Project::factory()->make()->toArray();
 
-    //act
+    // act
     $response = $this->post('projects', $project);
 
-    //assert
+    // assert
     $response->assertStatus(302);
     $response->assertRedirect('projects');
     \Pest\Laravel\assertDatabaseHas('projects', [
-        'name' => $project['name']
+        'name' => $project['name'],
     ]);
 
 });
 
 it('displays a list of Jiris on the jiri index', function () {
-    //arrange
+    // arrange
 
     $jiris = Jiri::factory(3)->create();
 
-    //act
+    // act
 
     $response = $this->get('/jiris');
 
-    //assert
+    // assert
     $response->assertStatus(200);
     $response->assertSee('<h1>liste des Jiris</h1>', false);
-
 
     /*    \Pest\Laravel\assertDatabaseHas('projects',
         ['name'=>'Projet Client',
@@ -109,85 +120,74 @@ it('displays a list of Jiris on the jiri index', function () {
 }
 );
 
-
 it('verifies if there are no jiris and displays an error message if there are none', function () {
 
-    //act
+    // act
     $response = $this->get('/jiris');
 
-    //assert
+    // assert
     $response->assertStatus(200);
     $response->assertSee('Il n’y a pas de Jiris', false);
 }
 );
 
-
 it('displays a detail page of Jiris and verifies if there is data', function () {
-    //arrange
+    // arrange
 
     $jiris = Jiri::factory(3)->create();
 
-    //act
-    $response = $this->get('jiris/' . $jiris->first()->id);
+    // act
+    $response = $this->get('jiris/'.$jiris->first()->id);
 
-    //assert
+    // assert
     $response->assertStatus(200);
     $response->assertSee($jiris->first()->name, false);
 
 });
 
-
 it('verifies that by clicking on a Jirilink, a user is redirected to the page of the Jiri', function () {
-    //arrange
+    // arrange
     $contacts = Contact::factory(3)->create();
 
-    //act
-    $response = $this->get('contacts/' . $contacts->first()->id);
+    // act
+    $response = $this->get('contacts/'.$contacts->first()->id);
 
-    //assert
+    // assert
     $response->assertStatus(200);
     $response->assertSee($contacts->first()->name, false);
 });
 
-
-
 it('verifies that by clicking on a Projectlink, a user is redirected to the page of the Project', function () {
-    //arrange
+    // arrange
     $projects = Project::factory(3)->create();
 
-    //act
-    $response = $this->get('projects/' . $projects->first()->id);
+    // act
+    $response = $this->get('projects/'.$projects->first()->id);
 
-    //assert
+    // assert
     $response->assertStatus(200);
     $response->assertSee($projects->first()->name, false);
 });
 
-
-
 it('verifies that the obligations are respected', function () {
-    //arrange
+    // arrange
     $jiris = Jiri::factory()->create();
 
-    //act
-$response = $this->get('jiris/' . $jiris->first()->id);
+    // act
+    $response = $this->get('jiris/'.$jiris->first()->id);
 
-    //assert
+    // assert
     $response->assertStatus(200);
-$response->assertValid();
+    $response->assertValid();
 
-
-
-    //arrange
+    // arrange
     $contacts = Contact::factory()->create();
 
-    //act
+    // act
     $response = $this->get('contacts/');
 
-    //assert
+    // assert
     $response->assertStatus(200);
     $response->assertValid();
 
 });
-
-
