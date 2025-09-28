@@ -32,8 +32,6 @@ expect($jiri->evaluators->count())->toBe(3)
 );
 
 
-
-
 it('is possible to retrieve many projects from a jiri',
     function () {
         // arrange
@@ -46,3 +44,8 @@ it('is possible to retrieve many projects from a jiri',
         $this->assertDatabaseCount('homeworks', 10);
         expect($jiri->projects->count())->toBe(10);
     });
+
+
+
+
+

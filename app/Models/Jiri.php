@@ -39,4 +39,9 @@ class Jiri extends Model
     {
         return $this->belongsToMany(Project::class, 'homeworks');
     }
+
+    public function homeworks():HasMany
+    {
+        return $this->hasMany(Homework::class);
+    }
 }
