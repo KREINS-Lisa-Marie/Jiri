@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ContactRoles;
 use App\Models\Contact;
 use App\Models\Jiri;
 use App\Models\Project;
@@ -47,7 +48,6 @@ it('creates successfully a Jiri from the data provided by the request',
     }
 );
 
-
 it(
     'fails to create a new jiri in database when the name is missing in the request',
     function () {
@@ -65,10 +65,6 @@ it(
 
     }
 );
-
-
-
-
 
 it(
     'fails to create a new jiri in database when the date is missing in the request',
@@ -88,9 +84,6 @@ it(
     }
 );
 
-
-
-
 it(
     'fails to create a new jiri in database when the date is the wrong format in the request',
     function () {
@@ -108,17 +101,6 @@ it(
 
     }
 );
-
-
-
-
-
-
-
-
-
-
-
 
 it('creates a Contact and redirects to the contact index', function () {
     // arrange
@@ -263,5 +245,124 @@ it('verifies that the obligations are respected', function () {
     // assert
     $response->assertStatus(200);
     $response->assertValid();
+
+});
+
+
+it('it verifies if the data is correctly submitted to the database when you create a jiri',
+    function () {
+
+        $form_data = Jiri::factory()->raw();
+
+        $projects = Project::factory()
+            ->count(2)
+            ->create()
+            ->pluck('id','id')
+            ->toArray();
+
+        $form_data['projects'] = $projects;
+        //$contacts = Contact::factory()->count(5)->raw();
+
+        //Act
+        $response = $this->post(route('jiris.store'), $form_data);
+
+        //Assert
+        \Pest\Laravel\assertDatabaseCount('homeworks',2);
+
+
+    });
+
+
+
+/*
+
+
+it('it verifies if the data is correctly submitted to the database when you create a jiri',
+    function () {
+
+        $jiri = Jiri::factory()->raw();
+
+        $contacts = Contact::factory()->count(5)->raw();
+     $projects = Project::factory()->count(4)->make()->toArray();
+
+//        $projects_data = array_map(function ($data){
+//            return $data['name'];
+//        }, $projects);
+
+ $projects_data=[];
+foreach ($projects as $data){
+array_push($projects_data, $data['name']);
+}
+    dd($projects_data);
+
+
+        //$form_data = array_merge($contacts, $projects);
+
+        $response = $this->post('/jiris/store', $form_data);
+
+
+
+        dd($form_data);
+    });
+
+
+
+
+
+*/
+
+it('it creates a jiri from the request data including a list of attendances',
+    function () {
+
+        $form_data = Jiri::factory()->raw();
+
+        $contacts = Contact::factory()
+            ->count(5)
+            ->create()
+            ->pluck('id','id')
+            ->toArray();
+
+        $available_roles =[
+            '1' => ContactRoles::Evaluators->value,
+            '2' => ContactRoles::Evaluated->value,
+        ];
+
+        $form_data['contacts'] = $contacts;
+
+        foreach ($contacts as $key => $contact){
+            $form_data['contacts'][$key] = array('role' => $available_roles[rand(1,2)]);
+        }
+        dd($form_data);
+
+        //Act
+        $response = $this->post(route('jiris.store'), $form_data);
+
+        //Assert
+        expect(\App\Models\Attendance::all()->count())->toBe(5);
+    });
+
+
+
+/*
+ *         $available_roles =[
+            '1' => 'none',
+            '2' => ContactRoles::Evaluators->value,
+            '3' => ContactRoles::Evaluated->value,
+        ];
+
+        $roles = [];
+        foreach ($contacts as $key=>$contact){
+            $roles[$key] = $available_roles[rand(1,3)];
+        }
+//dd($roles);
+
+$form_data['roles'] = $roles;
+*/
+
+
+
+
+
+it('creates a jiri from the data submitted by the request', function () {
 
 });

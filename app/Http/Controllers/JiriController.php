@@ -2,24 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContactRoles;
+use App\Models\Attendance;
+use App\Models\Contact;
 use App\Models\Jiri;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class JiriController extends Controller
 {
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'name' => 'required',
             'date' => 'required|date',
             'description' => 'nullable',
+            'projects.*' => 'nullable|integer',
+            'contacts.*' => 'nullable|array',
+            'contacts.*.role' => Rule::enum(ContactRoles::class),
         ]);
 
-        Jiri::create($validated);
+        $jiri = Jiri::create($validated);
+
+        //  kann auch private f° damit machen
+        if (!empty($validated['projects'])) {
+            $jiri->projects()->attach($validated['projects']);
+        }
+
+        //  kann auch private f° damit machen
+        if (!empty($validated['contacts'])) {
+            foreach ($validated['contacts'] as $id => $contact) {
+                $jiri
+                    ->contacts()
+                    ->attach(
+                        $id,
+                        ['role' => $contact['role']]
+                    );
+            }
+        }
 
         return redirect(route('jiris.index'));
         // to_route('jiris.index');
     }
+
 
     public function index()
     {
@@ -30,6 +56,7 @@ class JiriController extends Controller
 
     public function show(Jiri $jiri)
     {
+
         $jiris = Jiri::all();
 
         return View('jiris.show', compact('jiris'));
@@ -38,7 +65,8 @@ class JiriController extends Controller
     public function create()
     {
 
-        return view('jiris.create');
+        $contacts = Contact::all();
+        return view('jiris.create', compact('contacts'));
 
     }
 }
