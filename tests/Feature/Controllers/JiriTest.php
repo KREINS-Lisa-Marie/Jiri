@@ -2,6 +2,7 @@
 
 use App\Enums\ContactRoles;
 use App\Models\Contact;
+use App\Models\Homework;
 use App\Models\Jiri;
 use App\Models\Project;
 use Illuminate\Database\QueryException;
@@ -193,7 +194,7 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
     $jiris = Jiri::factory(3)->create();
 
     // act
-    $response = $this->get('jiris/'.$jiris->first()->id);
+    $response = $this->get('jiris/' . $jiris->first()->id);
 
     // assert
     $response->assertStatus(200);
@@ -206,7 +207,7 @@ it('verifies that by clicking on a Jirilink, a user is redirected to the page of
     $contacts = Contact::factory(3)->create();
 
     // act
-    $response = $this->get('contacts/'.$contacts->first()->id);
+    $response = $this->get('contacts/' . $contacts->first()->id);
 
     // assert
     $response->assertStatus(200);
@@ -218,7 +219,7 @@ it('verifies that by clicking on a Projectlink, a user is redirected to the page
     $projects = Project::factory(3)->create();
 
     // act
-    $response = $this->get('projects/'.$projects->first()->id);
+    $response = $this->get('projects/' . $projects->first()->id);
 
     // assert
     $response->assertStatus(200);
@@ -230,7 +231,7 @@ it('verifies that the obligations are respected', function () {
     $jiris = Jiri::factory()->create();
 
     // act
-    $response = $this->get('jiris/'.$jiris->first()->id);
+    $response = $this->get('jiris/' . $jiris->first()->id);
 
     // assert
     $response->assertStatus(200);
@@ -249,7 +250,7 @@ it('verifies that the obligations are respected', function () {
 });
 
 
-it('it verifies if the data is correctly submitted to the database when you create a jiri',
+it('it verifies if the data is correctly submitted to the database when you create a jiri including creating a list of projects',
     function () {
 
         $form_data = Jiri::factory()->raw();
@@ -257,7 +258,7 @@ it('it verifies if the data is correctly submitted to the database when you crea
         $projects = Project::factory()
             ->count(2)
             ->create()
-            ->pluck('id','id')
+            ->pluck('id', 'id')
             ->toArray();
 
         $form_data['projects'] = $projects;
@@ -267,11 +268,10 @@ it('it verifies if the data is correctly submitted to the database when you crea
         $response = $this->post(route('jiris.store'), $form_data);
 
         //Assert
-        \Pest\Laravel\assertDatabaseCount('homeworks',2);
+        \Pest\Laravel\assertDatabaseCount('homeworks', 2);
 
 
     });
-
 
 
 /*
@@ -319,20 +319,20 @@ it('it creates a jiri from the request data including a list of attendances',
         $contacts = Contact::factory()
             ->count(5)
             ->create()
-            ->pluck('id','id')
+            ->pluck('id', 'id')
             ->toArray();
 
-        $available_roles =[
+        $available_roles = [
             '1' => ContactRoles::Evaluators->value,
             '2' => ContactRoles::Evaluated->value,
         ];
 
         $form_data['contacts'] = $contacts;
 
-        foreach ($contacts as $key => $contact){
-            $form_data['contacts'][$key] = array('role' => $available_roles[rand(1,2)]);
+        foreach ($contacts as $key => $contact) {
+            $form_data['contacts'][$key] = array('role' => $available_roles[rand(1, 2)]);
         }
-        dd($form_data);
+        //dd($form_data);
 
         //Act
         $response = $this->post(route('jiris.store'), $form_data);
@@ -340,7 +340,6 @@ it('it creates a jiri from the request data including a list of attendances',
         //Assert
         expect(\App\Models\Attendance::all()->count())->toBe(5);
     });
-
 
 
 /*
@@ -360,9 +359,26 @@ $form_data['roles'] = $roles;
 */
 
 
-
-
-
 it('creates a jiri from the data submitted by the request', function () {
 
+    $data = Jiri::factory()->raw();
+    /*    $data = Jiri::make([
+            'name'=> $request->name,
+            'date'=> $request->date,
+            'description'=> $request->description,
+        ]);*/
+
+    $response = $this->post(route('jiris.store'), $data);
+
+    $response->assertStatus(302);
+    $response->assertValid();
+
+
+    $this->assertDatabaseHas('jiris', [
+        'name' => $data['name'],
+        'description' => $data['description'],
+        'date' => $data['date'],
+    ]);
 });
+
+

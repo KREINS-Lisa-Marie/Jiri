@@ -2,6 +2,7 @@
 
 use App\Enums\ContactRoles;
 use App\Models\Contact;
+use App\Models\Homework;
 use App\Models\Jiri;
 use App\Models\Project;
 
@@ -46,6 +47,25 @@ it('is possible to retrieve many projects from a jiri',
     });
 
 
+it('allows an evaluated contact to be linked to a homework through an implementation',
+    function () {
+        // arrange
+        $jiri = Jiri::factory()->create();
+        $project = Project::factory()->create();
+        $evaluated = Contact::factory()->create();
+
+        $jiri->contacts()->attach($evaluated->id, ['role' => ContactRoles::Evaluated->value]);
+        $jiri->projects()->attach($project->id);
+
+        $homework = Homework::first();
+
+        //Act
+        $evaluated->homeworks()->attach($homework->id);
+
+        //Assert
+        \Pest\Laravel\assertDatabaseCount('implementations',1);
+
+    });
 
 
 
