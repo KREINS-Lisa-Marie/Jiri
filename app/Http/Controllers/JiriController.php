@@ -6,6 +6,7 @@ use App\Enums\ContactRoles;
 use App\Models\Attendance;
 use App\Models\Contact;
 use App\Models\Jiri;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -50,8 +51,14 @@ class JiriController extends Controller
     public function index()
     {
         $jiris = Jiri::all();
+        $users = User::all();
 
-        return View('jiris.index', compact('jiris'));
+        foreach ($users as $user){
+            if ($user = auth()->user()){
+                return View('jiris.index', compact('jiris', 'user'));
+            }
+        }
+
     }
 
     public function show(Jiri $jiri)
