@@ -4,6 +4,8 @@ use App\Models\Contact;
 use App\Models\Jiri;
 use App\Models\Project;
 
+use App\Models\User;
+use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
@@ -36,6 +38,9 @@ test('the application returns a successful response', function () {
 it('redirects to the jiri index route after the successfull creation of a jiri',
     function () {
         // arrange
+        $user = User::factory()->create();
+        actingAs($user);
+
         $jiri = Jiri::factory()->raw();
 
         // act
@@ -126,7 +131,12 @@ it('creates a Project and redirects to the project index', function () {
 it('displays a list of Jiris on the jiri index', function () {
     // arrange
 
+
+
     $jiris = Jiri::factory(3)->create();
+
+    $user = User::factory()->create();
+    actingAs($user);
 
     // act
 
@@ -146,6 +156,10 @@ it('displays a list of Jiris on the jiri index', function () {
 it('verifies if there are no jiris and displays an error message if there are none', function () {
 
     // act
+    $user = User::factory()->create();
+    actingAs($user);
+
+
     $response = $this->get('/jiris');
 
     // assert
@@ -156,6 +170,8 @@ it('verifies if there are no jiris and displays an error message if there are no
 
 it('displays a detail page of Jiris and verifies if there is data', function () {
     // arrange
+    $user = User::factory()->create();
+    actingAs($user);
 
     $jiris = Jiri::factory(3)->create();
 
@@ -194,6 +210,10 @@ it('verifies that by clicking on a Projectlink, a user is redirected to the page
 
 it('verifies that the obligations are respected', function () {
     // arrange
+    $user = User::factory()->create();
+    actingAs($user);
+
+
     $jiris = Jiri::factory()->create();
 
     // act
