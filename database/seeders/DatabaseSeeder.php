@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Jiri;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -26,5 +27,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'anika@gmail.com',
             'password' => Hash::make('test'),
         ]);
+
+        Jiri::factory()->count(3)->create([
+            'user_id'=>1
+        ]);
+
+        Jiri::factory()->count(5)->create();
     }
 }

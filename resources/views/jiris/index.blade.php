@@ -8,10 +8,10 @@
     <title>Liste des Jiri</title>
 </head>
 <body>
-@if ($jiris->isNotEmpty())
-    <h1>liste des Jiris</h1>
+@if ($jiris->isNotEmpty() && $user)
+    <h1>liste des Jiris de {{$user->name}}</h1>
     <ol>
-        @foreach ($jiris as $jiri)
+        @foreach ($user->jiris as $jiri)
 
             <li>
                 <a href="/jiris/{{ $jiri->id }}">
