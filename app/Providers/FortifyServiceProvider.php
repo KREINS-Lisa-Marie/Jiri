@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rules\Password;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 
@@ -55,7 +54,7 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.register');
         });
 
-        RedirectIfAuthenticated::redirectUsing(function (){
+        RedirectIfAuthenticated::redirectUsing(function () {
             return route('jiris.index');
         });
     }

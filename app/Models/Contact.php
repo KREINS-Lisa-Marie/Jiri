@@ -13,22 +13,22 @@ class Contact extends Model
 
     protected $fillable = ['name', 'email'];
 
-
-    function jiris():BelongsToMany
+    public function jiris(): BelongsToMany
     {
         return $this->belongsToMany(Jiri::class, 'attendances');
     }
 
-    function implementations():HasMany
+    public function implementations(): HasMany
     {
         return $this->hasMany(Implementation::class);
     }
 
-    function homeworks():BelongsToMany
+    public function homeworks(): BelongsToMany
     {
         return $this->BelongsToMany(Homework::class, 'implementations');
     }
-    function attendances():HasMany
+
+    public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class);
     }

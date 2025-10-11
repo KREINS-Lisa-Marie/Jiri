@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
@@ -16,7 +17,7 @@ it(
         // act
 
         // assert
-        /*$response->assertStatus(200);*/
+        /* $response->assertStatus(200); */
         $response->assertSee("$main_heading", false);
 
     }
@@ -26,7 +27,6 @@ it(
         ['en', 'Create a Jiri'],
     ]
 );
-
 
 it('displays an error message when the name is misssing',
     function () {

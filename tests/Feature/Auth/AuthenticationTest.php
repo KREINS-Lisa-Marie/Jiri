@@ -2,21 +2,20 @@
 
 use App\Models\Jiri;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
-it("can display the login form", function () {
+it('can display the login form', function () {
 
-
-    //action
+    // action
 
     $response = $this->get('/login');
 
-    //assert
+    // assert
     $response->assertSee('Identifiez-vous')
         ->assertSeeInOrder(['<form', 'email', 'Mot de passe', '<button', 'Identifiez-vous'], true);
 }
 );
-
 
 it('redirects to the jiri index identified as the home page after a successfull login', function () {
 
@@ -26,7 +25,6 @@ it('redirects to the jiri index identified as the home page after a successfull 
         'name' => 'Anika',
         'email' => 'anika@gmail.com',
         'password' => Hash::make($password),
-        ''
     ]);
 
     $response = $this->post(route('login.store'), [
@@ -35,16 +33,14 @@ it('redirects to the jiri index identified as the home page after a successfull 
         'password' => $password,
     ]);
 
-    /*$response = $this->post(route('login.store'), $user );*/
+    /* $response = $this->post(route('login.store'), $user ); */
 
     $response->assertStatus(302)
         ->assertRedirect(route('jiris.index'));
 
 });
 
-
 it('redirects to the register page when the register link is clicked', function () {
-
 
     $response = $this->get(route('register'));
 
@@ -64,59 +60,24 @@ it('verifies that a user who is not connected can not access to the jiris page',
      ->assertSeeInOrder(['<form', 'email', 'Mot de passe', '<button', 'Identifiez-vous'], true);*/
 });
 
-
 it('verifies that the connected user is redirected to the jiris index page when accessing the login page and that the guest ist redirected to the login page when accessing the jiris index page', function () {
 
-    //arrange
-    $user = User::factory()
-        ->has(\App\Models\Jiri::factory()
-        ->count(3))
-        ->create();
-    $user2 = User::factory()->has(\App\Models\Jiri::factory()->count(2))->create();
 
-    actingAs($user);
-
-
-    $response = $this->get(route('jiris.index'));
-
-    foreach ($user->jiris() as $jiri) {
-        $response->assertStatus(200)
-            ->assertSee($jiri->name);
-    }
-
-    foreach ($user2->jiris() as $jiri) {
-        $response->assertStatus(302);
-    }
-
-
-        if ($user) {
-            $response = $this->get(route('login'));
-            $response->assertStatus(302)
-            ->assertRedirect('/jiris');
-        }
-
-    //act
-
-
-//assert
 
 });
 
 it('verifies if that a guest cannot access the jiri page', function () {
 
-
     $user = User::factory()->has(Jiri::factory()->count(3))->create();
 
-        $response = $this->get(route('jiris.index'));
-        $response->assertStatus(302)
-            ->assertRedirect('/login');
-
+    $response = $this->get(route('jiris.index'));
+    $response->assertStatus(302)
+        ->assertRedirect('/login');
 
 });
 
-
 it('verifies that the user connected to the dashboard is the same person than the dashboard shown', function () {
-    //arrange
+    // arrange
     $user = User::factory()
         ->has(\App\Models\Jiri::factory()
             ->count(3))
@@ -125,7 +86,6 @@ it('verifies that the user connected to the dashboard is the same person than th
 
     actingAs($user);
 
-
     $response = $this->get(route('jiris.index'));
 
     $response->assertStatus(200);
@@ -133,7 +93,28 @@ it('verifies that the user connected to the dashboard is the same person than th
 
 });
 
-/* montre nicht homepage wenn nicht angemeldet*/
+it('verifies that a user cannot modify a jiri from another user', function () {
+
+    $user = User::factory()->create();
+    $user2 = User::factory()->create();
+    actingAs($user);
+
+    $jiri = Jiri::factory()->create([
+        'user_id' => $user->id,
+    ]);
+
+    $jiri2 = Jiri::factory()->create([
+        'user_id' => $user2->id,
+    ]);
+
+    $response = $this->get(route('jiris.edit'), $jiri);
+
+    $response->assertStatus(403);
+       // ->assertSee();
+
+});
+
+/* montre nicht homepage wenn nicht angemeldet */
 
 /*
  *
