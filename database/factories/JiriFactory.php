@@ -21,7 +21,6 @@ class JiriFactory extends Factory
         ];
     }
 
-
     public function withoutName(): JiriFactory
     {
         return $this->state(function (array $attributes) {
@@ -31,7 +30,6 @@ class JiriFactory extends Factory
         });
     }
 
-
     public function withoutDate(): JiriFactory
     {
         return $this->state(function (array $attributes) {
@@ -40,9 +38,6 @@ class JiriFactory extends Factory
             ];
         });
     }
-
-
-
 
     public function withInvalidDate(): JiriFactory
     {

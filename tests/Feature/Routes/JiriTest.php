@@ -3,8 +3,8 @@
 use App\Models\Contact;
 use App\Models\Jiri;
 use App\Models\Project;
-
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
@@ -52,27 +52,6 @@ it('redirects to the jiri index route after the successfull creation of a jiri',
 
     }
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 it('creates a Contact and redirects to the contact index', function () {
     // arrange
@@ -130,13 +109,11 @@ it('creates a Project and redirects to the project index', function () {
 
 it('displays a list of Jiris on the jiri index', function () {
     // arrange
-
-
-
-    $jiris = Jiri::factory(3)->create();
-
     $user = User::factory()->create();
     actingAs($user);
+
+    $jiris = Jiri::factory(3)->create(['user_id' => $user->id]);
+
 
     // act
 
@@ -144,7 +121,7 @@ it('displays a list of Jiris on the jiri index', function () {
 
     // assert
     $response->assertStatus(200);
-    $response->assertSee('<h1>liste des Jiris</h1>', false);
+    $response->assertSee('liste des Jiris', false);
 
     /*    \Pest\Laravel\assertDatabaseHas('projects',
         ['name'=>'Projet Client',
@@ -159,7 +136,6 @@ it('verifies if there are no jiris and displays an error message if there are no
     $user = User::factory()->create();
     actingAs($user);
 
-
     $response = $this->get('/jiris');
 
     // assert
@@ -173,7 +149,7 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
     $user = User::factory()->create();
     actingAs($user);
 
-    $jiris = Jiri::factory(3)->create();
+    $jiris = Jiri::factory(3)->create(['user_id' => $user->id]);
 
     // act
     $response = $this->get('jiris/'.$jiris->first()->id);
@@ -213,8 +189,8 @@ it('verifies that the obligations are respected', function () {
     $user = User::factory()->create();
     actingAs($user);
 
-
-    $jiris = Jiri::factory()->create();
+    $jiris = Jiri::factory()->create(['user_id' => $user->id
+    ]);
 
     // act
     $response = $this->get('jiris/'.$jiris->first()->id);

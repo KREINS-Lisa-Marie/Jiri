@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContactRoles;
-use App\Models\Attendance;
 use App\Models\Contact;
 use App\Models\Jiri;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class JiriController extends Controller
@@ -24,12 +24,16 @@ class JiriController extends Controller
             'contacts.*.role' => Rule::enum(ContactRoles::class),
         ]);
 
-        $jiri = Jiri::create($validated);
+        $jiri = auth()->user()->jiris()->create($validated);
 
         //  kann auch private f° damit machen
         if (!empty($validated['projects'])) {
             $jiri->projects()->attach($validated['projects']);
         }
+
+        /*        if (!empty($validated['user_id'])) {
+                    $jiri->users()->attach($validated['user_id']);
+                }*/
 
         //  kann auch private f° damit machen
         if (!empty($validated['contacts'])) {
@@ -47,33 +51,49 @@ class JiriController extends Controller
         // to_route('jiris.index');
     }
 
-
     public function index()
     {
         $jiris = Jiri::all();
         $users = User::all();
 
-        foreach ($users as $user){
-            if ($user = auth()->user()){
+        foreach ($users as $user) {
+            if ($user = auth()->user()) {
                 return View('jiris.index', compact('jiris', 'user'));
             }
         }
-
     }
 
     public function show(Jiri $jiri)
     {
+        $user = Auth::user();
 
-        $jiris = Jiri::all();
+        if ($jiri->user_id === $user->id) {
+            return View('jiris.show', compact('jiri', 'user'));
+        }
 
-        return View('jiris.show', compact('jiris'));
     }
 
     public function create()
     {
 
         $contacts = Contact::all();
+
         return view('jiris.create', compact('contacts'));
 
+    }
+
+    public function edit(Jiri $jiri)
+    {
+
+        $user = Auth::user();
+
+        return view('jiris.edit', compact('jiri'));
+    }
+
+    public function update(Jiri $jiri)
+    {
+        $user = Auth::user();
+
+        return view('jiris.show', compact('jiri'));
     }
 }

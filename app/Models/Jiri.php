@@ -13,39 +13,40 @@ class Jiri extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'date', 'description'];
+    protected $fillable = ['name', 'date', 'description', 'user_id', 'contact_id', 'project_id'];
 
-    function contacts():BelongsToMany
+    public function contacts(): BelongsToMany
     {
         return $this->belongsToMany(Contact::class, 'attendances');
     }
 
-
-    function evaluators():BelongsToMany
+    public function evaluators(): BelongsToMany
     {
         return $this->contacts()->wherePivot('role', ContactRoles::Evaluators->value);
     }
 
-    function evaluated():BelongsToMany
+    public function evaluated(): BelongsToMany
     {
         return $this->contacts()->wherePivot('role', ContactRoles::Evaluated->value);
     }
-    function attendances():HasMany
+
+    public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class);
     }
 
-    function projects():BelongsToMany
+    public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'homeworks');
     }
 
-    public function homeworks():HasMany
+    public function homeworks(): HasMany
     {
         return $this->hasMany(Homework::class);
     }
 
-    public function users():BelongsToMany
-    {return $this->belongsToMany(User::class);
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

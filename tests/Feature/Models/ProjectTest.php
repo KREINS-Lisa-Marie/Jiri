@@ -2,20 +2,30 @@
 
 use App\Models\Jiri;
 use App\Models\Project;
+use App\Models\User;
+use function Pest\Laravel\actingAs;
 
 it('is possible to retrieve many jiris from a project',
-function () {
-// arrange
+    function () {
+        // arrange
 
-    $project = Project::factory()
-        ->hasAttached(
-            Jiri::factory()->count(10)
-        )->create();
+        $user = User::factory()->create();
+        actingAs($user);
 
-// assert
+        Jiri::factory()->create([
+            'user_id' => $user->id
+        ]);
 
-    $this->assertDatabaseCount('homeworks', 10);
-    expect($project->jiris->count())->toBe(10);
-}
+        $project = Project::factory()
+            ->hasAttached(
+                Jiri::factory()->count(10)
+            )->create([
+                'user_id' => $user->id
+            ]);
+
+        // assert
+
+        $this->assertDatabaseCount('homeworks', 10);
+        expect($project->jiris->count())->toBe(10);
+    }
 );
-
