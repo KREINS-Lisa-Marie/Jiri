@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class ProjectFactory extends Factory
 {
@@ -13,6 +14,8 @@ class ProjectFactory extends Factory
     {
         return [
             'name' => fake()->name,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
     }
 }

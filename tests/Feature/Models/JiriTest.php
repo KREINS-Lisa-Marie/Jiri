@@ -12,7 +12,7 @@ it('is possible to retrieve many evaluated and many evaluators from a jiri',
     function () {
         // arrange
         //    $jiri = \App\Models\Jiri::factory()->create();
-        $jiri = Jiri::factory()
+/*        $jiri = Jiri::factory()
 
             ->hasAttached(
                 Contact::factory()->count(7),
@@ -23,7 +23,26 @@ it('is possible to retrieve many evaluated and many evaluators from a jiri',
                 ['role' => ContactRoles::Evaluators->value]
             )
 
-            ->create(['user_id' => Auth::id()]);
+            ->create(['user_id' => Auth::id()]);*/
+
+        $user = User::factory()->create();
+        ActingAs($user);
+
+        $jiri = Jiri::factory()->create([
+            'user_id' => Auth::id(),
+        ]);
+
+        // ajouter 7 evaluated
+        $jiri->contacts()->attach(
+            Contact::factory()->count(7)->create()->pluck('id'),
+            ['role' => ContactRoles::Evaluated->value]
+        );
+
+        //ajouter 3 évaluateurs
+        $jiri->contacts()->attach(
+            Contact::factory()->count(3)->create()->pluck('id'),
+            ['role' => ContactRoles::Evaluators->value]
+        );
 
         // assert
         $this->assertDatabaseCount('attendances', 10);
@@ -60,13 +79,13 @@ it('allows an evaluated contact to be linked to a homework through an implementa
         $project = Project::factory()->create();
         $evaluated = Contact::factory()->create();
 
-        $jiri->contacts()->attach($evaluated->id, ['role' => ContactRoles::Evaluated->value]);
-        $jiri->projects()->attach($project->id);
+        $jiri->contacts()->attach($evaluated->id, ['role' => ContactRoles::Evaluated->value]);      //attendance
+        $jiri->projects()->attach($project->id);            //implémentation
 
         $homework = Homework::first();
 
         // Act
-        $evaluated->homeworks()->attach($homework->id);
+        $evaluated->homeworks()->attach($homework->id);     //attach geht nur mit BelongsToMany relation
 
         // Assert
         \Pest\Laravel\assertDatabaseCount('implementations', 1);
