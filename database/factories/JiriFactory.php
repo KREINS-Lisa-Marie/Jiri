@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Jiri;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -18,6 +19,7 @@ class JiriFactory extends Factory
             'description' => $this->faker->optional()->text(),
             /*            'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),*/
+            'user_id' => rand(1, count(User::all())-1)
         ];
     }
 
