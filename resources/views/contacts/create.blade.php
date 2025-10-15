@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="fr">
+<html lang="{!! App::getLocale() !!}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Lisa-Marie">
     <meta name="keywords" content="jiris">
-    <title>{{__('contact.details_of_the_contact')}}{{$contact->name}}</title>
+    <title>{{__('headings.create_a_contact')}}</title>
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
@@ -14,25 +14,47 @@
         </style>
     @endif
 </head>
-<body>
-@if ($contacts->isNotEmpty())
-        <h1 class="text-2xl font-semibold text-center text-gray-800 mb-6 ">{{__('contact.details_of_the_contact')}}{{$contact->name}}</h1>
-        <ul>
-            <li class="pt-4 pl-4 ">
-                <p class="text-xl font-bold ">{{__('contact.name')}}</p>
-                   <p>{!!$contact->name;!!}</p>
-            </li>
-            <li  class="pt-4 pl-4">
-                <p  class="text-xl font-bold ">{{__('contact.email')}}</p>
-                    <p>{!!$contact->email;!!}</p>
-            </li>
-            <li  class="pt-4 pl-4">
-                <p  class="text-xl font-bold ">{{__('contact.avatar')}}</p>
-                <img src="{!! asset('storage/'.$contact->avatar) !!}" alt="L’avatar de {!! $contact->name !!}">
-            </li>
-        </ul>
-@else
-    <h1><em>Il n’y a pas de Contact </em></h1>
-@endif
+<body class=" p-8 bg-white rounded flex-col flex items-center justify-center space-y-5 max-h-fit">
+    <h1 class="text-2xl font-semibold text-center text-gray-800 mb-6 "
+    >{{__('headings.create_a_contact')}}</h1>
+
+    <form action="{!! route('contacts.store') !!}" method="post" class=" text-black flex flex-col" enctype="multipart/form-data">
+        @csrf
+            <div class="field">
+                <div class="name flex flex-col">
+                    <label for="name" class="p-2 text-gray-500">{{__('labels-buttons.name')}}</label>
+                    <input type="text" id="name" name="name" class="border border-black rounded p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" value="{{old('name')}}">
+                    @error('name')
+                    <p class="error text-red-500">
+                        {{$message}}
+                    </p>
+                    @enderror
+                </div>
+                <div class="email flex flex-col">
+                    <label for="email" class="p-2 text-gray-500">{{__('labels-buttons.email')}}</label>
+                    <input type="email" id="email" name="email" class="border border-black rounded p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" value="{{old('email')}}">
+                    @error('email')
+                    <p class="error text-red-500">
+                        {{$message}}
+                    </p>
+                    @enderror
+                </div>
+                <div class="avatar flex flex-col">
+                    <label for="avatar" class="p-2 text-gray-500">{{__('labels-buttons.avatar')}}</label>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="3000000000" />
+                    <input type="file" id="avatar" name="avatar" class="border border-black rounded p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" >
+                    @error('avatar')
+                    <p class="error text-red-500">
+                        {{$message}}
+                    </p>
+                    @enderror
+                </div>
+            </div>
+        <button type="submit" class="bg-blue-800 my-4 p-4 rounded font-medium text-white w-full  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            {{__('labels-buttons.create_a_contact')}}
+        </button>
+    </form>
+
+
 </body>
 </html>

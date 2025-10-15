@@ -5,6 +5,8 @@ use App\Http\Controllers\JiriController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
+//echo storage_path();
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -17,6 +19,10 @@ Route::get('jiris/create', [JiriController::class, 'create'])->name('jiris.creat
 // Route::get('jiris/{jiri}', [JiriController::class, 'show'])->name('jiris.show');
 
 Route::resource('jiris', JiriController::class)->middleware('auth');
+Route::get('jiris/{jiri}/edit',[JiriController::class,'edit'])->name('jiris.edit')->middleware([
+    'auth',
+    'can:update'
+]);
 
 Route::resource('contacts', ContactController::class);
 

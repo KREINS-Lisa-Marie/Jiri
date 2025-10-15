@@ -3,10 +3,14 @@
 return [
     'create_a_jiri' => 'Créez un Jiri',
     'name' => 'Nom',
+    'email' => 'Email',
+    'avatar' => 'Ajoutez une image de profile',
     'date' => 'Date',
     'description' => 'Description',
     'legend_jiri' => ' Le Jiri',
     'legend_contacts' => 'Les Contacts',
     'legend_projects' => 'Les Projets',
     'modify_a_jiri' => 'Modifier un Jiri',
+    'legend_create_a_contact'=> 'Le contact',
+    'create_a_contact' => 'Créez un Contact',
 ];

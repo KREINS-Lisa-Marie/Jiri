@@ -79,13 +79,13 @@ it('verifies that a user cannot modify a jiri from another user', function () {
     $user2 = User::factory()->create();
     actingAs($user);
 
-    $jiri = Jiri::factory()->create([
-        'user_id' => $user->id,
-    ]);
+    $jiri = Jiri::factory()
+        ->for($user)
+        ->create();
 
-    $jiri2 = Jiri::factory()->create([
-        'user_id' => $user2->id,
-    ]);
+    $jiri2 = Jiri::factory()
+        ->for($user2)
+        ->create();
 
     $response = $this->get(route('jiris.edit', ['jiri' => $jiri2]));
 

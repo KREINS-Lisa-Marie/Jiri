@@ -200,7 +200,7 @@ it('verifies that the obligations are respected', function () {
     $response->assertValid();
 
     // arrange
-    $contacts = Contact::factory()->create();
+    $contacts = Contact::factory()->create(['user_id'=>$user->id]);
 
     // act
     $response = $this->get('contacts/');
