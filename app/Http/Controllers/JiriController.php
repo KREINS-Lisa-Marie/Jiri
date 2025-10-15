@@ -89,7 +89,6 @@ class JiriController extends Controller
 
     public function edit(Jiri $jiri)
     {
-
         //$user = Auth::user();
 
         $contacts = Contact::all();
