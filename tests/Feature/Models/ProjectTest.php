@@ -16,9 +16,9 @@ it('is possible to retrieve many jiris from a project',
             'user_id' => $user->id
         ]);
 
-        $project = Project::factory()
+        $project = Project::factory()->for($user)
             ->hasAttached(
-                Jiri::factory()->count(10)->state(['user_id' => $user->id])
+                Jiri::factory()->for($user)->count(10)->state(['user_id' => $user->id])
             )->create();
 
         // assert

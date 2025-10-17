@@ -28,19 +28,19 @@ it('is possible to retrieve many evaluated and many evaluators from a jiri',
         $user = User::factory()->create();
         ActingAs($user);
 
-        $jiri = Jiri::factory()->create([
+        $jiri = Jiri::factory()->for($user)->create([
             'user_id' => Auth::id(),
         ]);
 
         // ajouter 7 evaluated
         $jiri->contacts()->attach(
-            Contact::factory()->count(7)->create()->pluck('id'),
+            Contact::factory()->for($user)->count(7)->create()->pluck('id'),
             ['role' => ContactRoles::Evaluated->value]
         );
 
         //ajouter 3 évaluateurs
         $jiri->contacts()->attach(
-            Contact::factory()->count(3)->create()->pluck('id'),
+            Contact::factory()->for($user)->count(3)->create()->pluck('id'),
             ['role' => ContactRoles::Evaluators->value]
         );
 
@@ -59,10 +59,10 @@ it('is possible to retrieve many projects from a jiri',
         $user = User::factory()->create();
         actingAs($user);
 
-        $jiri = Jiri::factory()
+        $jiri = Jiri::factory()->for($user)
             ->hasAttached(
-                Project::factory()->count(10)
-            )->create(['user_id' => Auth::user()->id]);
+                Project::factory()->for($user)->count(10)
+            )->create();
 
         // assert
         $this->assertDatabaseCount('homeworks', 10);
@@ -76,8 +76,8 @@ it('allows an evaluated contact to be linked to a homework through an implementa
         actingAs($user);
 
         $jiri = Jiri::factory()->create(['user_id' => Auth::user()->id]);
-        $project = Project::factory()->create();
-        $evaluated = Contact::factory()->create();
+        $project = Project::factory()->for($user)->create();
+        $evaluated = Contact::factory()->for($user)->create();
 
         $jiri->contacts()->attach($evaluated->id, ['role' => ContactRoles::Evaluated->value]);      //attendance
         $jiri->projects()->attach($project->id);            //implémentation
