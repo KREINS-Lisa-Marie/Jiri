@@ -44,8 +44,8 @@ Route::get('jiris/{jiri}', [JiriController::class, 'show'])->name('jiris.show')-
 
 Route::post('jiris', [JiriController::class, 'store'])->name('jiris.store')->middleware([
     'auth',
-    'can:store,jiri',
-    'can:update,jiri',
+    //'can:store,jiri',
+    //'can:update,jiri',
 ]);
 
 
@@ -82,7 +82,7 @@ Route::patch('contacts/{contact}', [ContactController::class, 'update'])->name('
 ]);
 Route::post('contacts/', [ContactController::class, 'store'])->name('contacts.store')->middleware([
     'auth',
-    'can:store,contact'
+    //'can:store,contact'
 ]);
 
 
@@ -94,7 +94,6 @@ Route::get('projects/', [ProjectController::class, 'index'])->name('projects.ind
 
 Route::get('projects/create', [ProjectController::class, 'create'])->name('projects.create')->middleware([
     'auth',
-
 ]);
 Route::resource('projects', ProjectController::class);
 

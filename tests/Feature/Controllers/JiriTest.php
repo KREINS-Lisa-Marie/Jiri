@@ -88,8 +88,8 @@ it(
     'fails to create a new jiri in database when the date is missing in the request',
     function () {
         // arrange
-        $user = User::factory()->create();
-        actingAs($user);
+        //$user = User::factory()->create();
+        //actingAs($user);
 
         $jiri = Jiri::factory()
             ->withoutDate()
@@ -116,11 +116,12 @@ it(
             ->withInvalidDate()
             ->raw();
 
-        $response = $this->post('jiris', $jiri);
+        $response = $this->post(route('jiris.store', $jiri));
         // expect($response)->toThrow(QueryException::class);
 
         // assert
         $response->assertInvalid('date');
+        //$response->assertSessionHasErrors('date');
         \Pest\Laravel\assertDatabaseEmpty('jiris');
 
     }

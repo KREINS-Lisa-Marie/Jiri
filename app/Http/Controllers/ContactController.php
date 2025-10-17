@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\ContactRoles;
 use App\Http\Requests\StoreContactRequest;
+use App\Jobs\ProcessUploadContactAvatar;
 use App\Models\Contact;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -18,6 +20,7 @@ use Intervention\Image\Laravel\Facades\Image;
 class ContactController extends Controller
 {
     use AuthorizesRequests;
+
     public function index()
     {
         $contacts = Auth::user()->contacts;
@@ -27,9 +30,9 @@ class ContactController extends Controller
     }
 
 
-    public function store(StoreContactRequest $request, Contact $contact)
+    public function store(StoreContactRequest $request): RedirectResponse
     {
-        $this->authorize('store', $contact);
+        // $this->authorize('store', $contact);
         $validated = $request->validated();
         //Gate::authorize('create', $contact);
         //Gate::authorize('store', $contact);
@@ -39,25 +42,35 @@ class ContactController extends Controller
         //dd($validated);
 
         if ($request->hasFile('avatar')) {
-            $image = Image::read($validated['avatar'])
-                ->resize(300, 300)
-                ->toJpeg(80);   // compression %
 
-            $file_name = 'contact_' . uniqid() . '_300x300'.'.'.config('contactsavatar.imagetype');
-            $path = "contacts/$file_name";
+            $new_original_file_name = uniqid() . '.' . config('contactavatar.jpg_image_type');
 
-
-            Storage::disk('public')->put($path, $image->toString());
-            //dd($path);
-            //dd($path);
-            //$file_name = uniqid('contact_').'.jpg';
-            //$path ="contact/$file_name";
-            //\Storage::disk('public')->put($path, $request->file('avatar'));
-            $validated['avatar'] = $path;
+            $full_path_to_original = Storage::putFileAs(
+                    config('contactavatar.originals_path'),
+                    $validated['avatar'],
+                    $new_original_file_name);
+                    $validated['avatar'] = $new_original_file_name;
+            if ($full_path_to_original) {
+                ProcessUploadContactAvatar::dispatch($full_path_to_original, $new_original_file_name);
+            } else {
+                $validated['avatar'] = '';
+            }
         }
+        /*
+                    $original_file_name = 'contact_' . uniqid() . '_300x300'.'.'.config('contactsavatar.imagetype');
+                    $original_file_path = "contacts/$original_file_name";
+
+
+                    Storage::disk('public')->put($original_file_path, $image->toString());
+                    //dd($path);
+                    //dd($path);
+                    //$file_name = uniqid('contact_').'.jpg';
+                    //$path ="contact/$file_name";
+                    //\Storage::disk('public')->put($path, $request->file('avatar'));
+                    $validated['avatar'] = $original_file_path;*/
         $contact = auth()->user()->contacts()->create($validated);
         //Contact::create($validated);
-        return redirect()->route('contacts.show', compact('contact')/*$contact->id*/);
+        return redirect()->route('contacts.show', $contact /*$contact->id*/);
     }
 
 
@@ -93,9 +106,9 @@ class ContactController extends Controller
         $contact->upsert(
             [
                 [
-                    'id'=>$contact->id,
+                    'id' => $contact->id,
                     'name' => $validated_data['name'],
-                    'email' => $validated_data['email']=== $contact['email'] ? $contact['email'] : $validated_data['email'],
+                    'email' => $validated_data['email'] === $contact['email'] ? $contact['email'] : $validated_data['email'],
                     'avatar' => $validated_data['avatar'],
                     'user_id' => Auth::user()->id,
                 ],
@@ -104,6 +117,6 @@ class ContactController extends Controller
             ['name', 'email', 'avatar']);
 
 
-        return view('contacts.show', compact('contact'));
+        return redirect(route('contacts.show', $contact));
     }
 }

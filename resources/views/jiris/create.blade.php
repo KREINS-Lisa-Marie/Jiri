@@ -80,10 +80,20 @@
             <div class="text_field">
                 <label for="name">{{__('labels-buttons.name')}}</label>
                 <input type="text" name="name" id="name">
+                @error('name')
+                <p class="error text-red-500">
+                    {{$message}}
+                </p>
+                @enderror
             </div>
             <div class="text_field">
         <label for="date">{{__('labels-buttons.date')}}</label>
         <input type="date" name="date" id="date">
+                @error('date')
+                <p class="error text-red-500">
+                    {{$message}}
+                </p>
+                @enderror
                 </div>
             <div class="textarea_field">
         <label for="description">
