@@ -8,9 +8,9 @@
     <title>Liste du projets</title>
 </head>
 <body>
-@if ($projects->isNotEmpty())
-    @foreach ($projects as $project)
-        <h1>Détail du Contact : {{$project->id}}</h1>
+@if ($project)
+
+        <h1>Détail du Projet : {{$project->name}}</h1>
         <ol>
 
 
@@ -20,7 +20,6 @@
                 </a>
             </li>
         </ol>
-    @endforeach
 @else
     <h1><em>Il n’y a pas de projets </em></h1>
 @endif

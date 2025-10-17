@@ -41,7 +41,7 @@ it('redirects to the jiri index route after the successfull creation of a jiri',
         $user = User::factory()->create();
         actingAs($user);
 
-        $jiri = Jiri::factory()->raw();
+        $jiri = Jiri::factory()->for($user)->raw();
 
         // act
         $response = post(route('jiris.store'), $jiri);
@@ -55,17 +55,22 @@ it('redirects to the jiri index route after the successfull creation of a jiri',
 
 it('creates a Contact and redirects to the contact index', function () {
     // arrange
-    $contact = [
+
+    $user = User::factory()->create();
+    actingAs($user);
+
+    $contact = Contact::factory()->for($user)->create([
         'name' => 'Dominique Vilain',
         'email' => 'dominique.vilain@hepl.be',
-    ];
+    ]);
 
     // act
-    $response = $this->post('/contacts', $contact);
+    $response = $this->post(route('contacts.store', $contact->toArray()));
 
     // assert
     $response->assertStatus(302);
-    $response->assertRedirect('/contacts');
+    $response->assertRedirect(route("contacts.show",
+    $contact->id));
     \Pest\Laravel\assertDatabaseHas('contacts',
         ['name' => 'Dominique Vilain',
             'email' => 'dominique.vilain@hepl.be',
@@ -93,7 +98,10 @@ it('creates a Contact and redirects to the contact index', function () {
 
 it('creates a Project and redirects to the project index', function () {
     // arrange
-    $project = Project::factory()->make()->toArray();
+    $user = User::factory()->create();
+    actingAs($user);
+
+    $project = Project::factory()->for($user)->make()->toArray();
 
     // act
     $response = $this->post('projects', $project);
@@ -162,26 +170,56 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
 
 it('verifies that by clicking on a Jirilink, a user is redirected to the page of the Jiri', function () {
     // arrange
-    $contacts = Contact::factory(3)->create();
+
+    $user = User::factory()->create();
+    actingAs($user);
+
+    $jiri = Jiri::factory()->for($user)->create();
+
+    // act
+    $response = $this->get('jiris/'.$jiri->id);
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertSee($jiri->first()->name, false);
+    /* $contacts = Contact::factory(3)->create();
 
     // act
     $response = $this->get('contacts/'.$contacts->first()->id);
 
     // assert
     $response->assertStatus(200);
-    $response->assertSee($contacts->first()->name, false);
+    $response->assertSee($contacts->first()->name, false);*/
 });
 
 it('verifies that by clicking on a Projectlink, a user is redirected to the page of the Project', function () {
     // arrange
-    $projects = Project::factory(3)->create();
+
+    $user = User::factory()->create();
+    actingAs($user);
+
+    $project = Project::factory()->for($user)->create();
+
+    // act
+    $response = $this->get('projects/'.$project->id);
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertSee($project->first()->name, false);
+
+   /*
+    $user = User::factory()->create(['user_id' => 115]);
+    actingAs($user);
+
+
+    $projects = Project::factory(3)->for($user)->create();
 
     // act
     $response = $this->get('projects/'.$projects->first()->id);
 
     // assert
     $response->assertStatus(200);
-    $response->assertSee($projects->first()->name, false);
+    $response->assertSee($projects->first()->name, false);*/
 });
 
 it('verifies that the obligations are respected', function () {

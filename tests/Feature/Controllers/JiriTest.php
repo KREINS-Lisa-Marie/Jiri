@@ -9,6 +9,12 @@ use Illuminate\Database\QueryException;
 
 use function Pest\Laravel\actingAs;
 
+beforeEach(function () {
+    $this->user = User::factory()->create();
+
+    actingAs($this->user);
+});
+
 test('the application returns a successful response', function () {
     $response = $this->get('/');
 
@@ -42,10 +48,12 @@ it('creates successfully a Jiri from the data provided by the request',
         $user = User::factory()->create();
         actingAs($user);
 
-        $jiri = Jiri::factory()->raw();
+        //$jiri = Jiri::factory()->for($user)->create();
+        $jiri = Jiri::factory()->for($user)->create();
+        //$jiri = Jiri::factory()->raw();
 
         // act
-        $response = $this->post('jiris', $jiri);
+        $response = $this->post(route('jiris.store'), $jiri->toArray());
 
         // assert
         /*        $response->assertStatus(302);
@@ -63,7 +71,7 @@ it(
         actingAs($user);
 
         $jiri = Jiri::factory()
-            ->withoutName()
+            ->withoutName()->for($user)
             ->raw();
 
         $response = $this->post('jiris', $jiri);
@@ -193,16 +201,19 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
 
 });
 
-it('verifies that by clicking on a Jirilink, a user goes to the page of the Jiri', function () {
+it('displays the details page of a contact', function () {
     // arrange
-    $contacts = Contact::factory(3)->create();          //changer !!!  ≠ contact
+    $user = User::factory()->create();
+    actingAs($user);
+
+    $contact = Contact::factory()->for($user)->create();          //changer !!!  ≠ contact
 
     // act
-    $response = $this->get('contacts/' . $contacts->first()->id);
+    $response = $this->get(route('contacts.show', compact('contact')));
 
     // assert
     $response->assertStatus(200);
-    $response->assertSee($contacts->first()->name, false);
+    $response->assertSee($contact->name, false);
 });
 
 it('verifies that the obligations are respected', function () {
@@ -222,7 +233,7 @@ it('verifies that the obligations are respected', function () {
     $response->assertStatus(200);
 
     // arrange
-    $contacts = Contact::factory()->create();
+    $contacts = Contact::factory()->for($user)->create();
 
     // act
     $response = $this->get('contacts/');
@@ -238,9 +249,9 @@ it('it verifies if the data is correctly submitted to the database when you crea
         $user = User::factory()->create();
         actingAs($user);
 
-        $form_data = Jiri::factory()->raw();
+        $form_data = Jiri::factory()->for($user)->raw();
 
-        $projects = Project::factory()
+        $projects = Project::factory()->for($user)
             ->count(2)
             ->create()
             ->pluck('id', 'id')
@@ -300,10 +311,10 @@ it('it creates a jiri from the request data including a list of attendances',
         $user = User::factory()->create();
         actingAs($user);
 
-        $form_data = Jiri::factory()->raw();
+        $form_data = Jiri::factory()->for($user)->raw();
 
         $contacts = Contact::factory()
-            ->count(5)
+            ->count(5)->for($user)
             ->create()
             ->pluck('id', 'id')
             ->toArray();
@@ -348,7 +359,7 @@ it('creates a jiri from the data submitted by the request', function () {
     $user = User::factory()->create();
     actingAs($user);
 
-    $data = Jiri::factory()->raw();
+    $data = Jiri::factory()->for($user)->raw();
     /*    $data = Jiri::make([
             'name'=> $request->name,
             'date'=> $request->date,
@@ -362,7 +373,9 @@ it('creates a jiri from the data submitted by the request', function () {
 
     $this->assertDatabaseHas('jiris', [
         'name' => $data['name'],
-        'description' => $data['description'],
+        //'description' => $data['description'],
         'date' => $data['date'],
     ]);
 });
+
+

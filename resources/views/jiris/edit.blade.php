@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,16 +22,25 @@
                 <div class="text_field">
                     <label for="name">{{__('labels-buttons.name')}}</label>
                     <input type="text" name="name" id="name" value="{{$jiri->name}}">
+                @error('name')
+                    {{$message}}
+                    @enderror
                 </div>
                 <div class="text_field">
                     <label for="date">{{__('labels-buttons.date')}}</label>
                     <input type="date" name="date" id="date" value="{{$jiri->date}}">
+                    @error('date')
+                    {{$message}}
+                    @enderror
                 </div>
                 <div class="textarea_field">
                     <label for="description">
                         {{__('labels-buttons.description')}}
                     </label>
                     <textarea name="description" >{{$jiri->description ?? ""}}</textarea>
+                    @error('description')
+                    {{$message}}
+                    @enderror
                 </div>
             </div>
         </fieldset>

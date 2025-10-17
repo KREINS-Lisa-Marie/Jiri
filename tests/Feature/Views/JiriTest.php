@@ -19,7 +19,6 @@ it(
         // assert
         /* $response->assertStatus(200); */
         $response->assertSee("$main_heading", false);
-
     }
 )->with(
     [

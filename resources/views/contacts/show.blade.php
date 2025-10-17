@@ -15,7 +15,7 @@
     @endif
 </head>
 <body>
-@if ($contacts->isNotEmpty())
+@if ($contact)
         <h1 class="text-2xl font-semibold text-center text-gray-800 mb-6 ">{{__('contact.details_of_the_contact')}}{{$contact->name}}</h1>
         <ul>
             <li class="pt-4 pl-4 ">
@@ -31,6 +31,10 @@
                 <img src="{!! asset('storage/'.$contact->avatar) !!}" alt="L’avatar de {!! $contact->name !!}">
             </li>
         </ul>
+        <a href="/contacts/{{ $contact->id }}/edit" class="block pt-20 pl-4 text-blue-600" title="aller vers la page ">
+            Modifier le contact
+        </a>
+
 @else
     <h1><em>Il n’y a pas de Contact </em></h1>
 @endif
