@@ -48,7 +48,7 @@ it('redirects to the jiri index route after the successfull creation of a jiri',
 
         // assert
         $response->assertStatus(302);
-        $response->assertRedirect('jiris');
+        $response->assertRedirect(route('jiris.index'));
 
     }
 );
@@ -59,18 +59,18 @@ it('creates a Contact and redirects to the contact index', function () {
     $user = User::factory()->create();
     actingAs($user);
 
-    $contact = Contact::factory()->for($user)->create([
+    $contact = Contact::factory()->for($user)->make([
         'name' => 'Dominique Vilain',
         'email' => 'dominique.vilain@hepl.be',
-    ]);
+    ])->toArray();
 
     // act
-    $response = $this->post(route('contacts.store', $contact->toArray()));
+    $response = $this->post(route('contacts.store', $contact));
 
     // assert
     $response->assertStatus(302);
-    $response->assertRedirect(route("contacts.show",
-    $contact->id));
+    $contact = Contact::first();
+    $response->assertRedirect(route("contacts.show", $contact->id));
     \Pest\Laravel\assertDatabaseHas('contacts',
         ['name' => 'Dominique Vilain',
             'email' => 'dominique.vilain@hepl.be',
@@ -101,14 +101,17 @@ it('creates a Project and redirects to the project index', function () {
     $user = User::factory()->create();
     actingAs($user);
 
-    $project = Project::factory()->for($user)->make()->toArray();
+    $project = Project::factory()->for($user)->make([
+        'name'=>'bonjour',
+
+    ])->toArray();
 
     // act
-    $response = $this->post('projects', $project);
+    $response = $this->post(route('projects.store', $project));
 
     // assert
     $response->assertStatus(302);
-    $response->assertRedirect('projects');
+    $response->assertRedirect(route('projects.index',$project->id));
     \Pest\Laravel\assertDatabaseHas('projects', [
         'name' => $project['name'],
     ]);

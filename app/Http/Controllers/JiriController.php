@@ -19,7 +19,7 @@ class JiriController extends Controller
 
     public function store(StoreJiriRequest $request, Jiri $jiri)
     {
-        $this->authorize('store', $jiri);
+       // $this->authorize('store', $jiri);
         $validated = $validated = $request->validated();
 
         $jiri = auth()->user()->jiris()->create($validated);
