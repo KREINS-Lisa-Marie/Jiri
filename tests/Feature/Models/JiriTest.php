@@ -6,24 +6,25 @@ use App\Models\Homework;
 use App\Models\Jiri;
 use App\Models\Project;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
 it('is possible to retrieve many evaluated and many evaluators from a jiri',
     function () {
         // arrange
         //    $jiri = \App\Models\Jiri::factory()->create();
-/*        $jiri = Jiri::factory()
+        /*        $jiri = Jiri::factory()
 
-            ->hasAttached(
-                Contact::factory()->count(7),
-                ['role' => ContactRoles::Evaluated->value]
-            )
-            ->hasAttached(
-                Contact::factory()->count(3),
-                ['role' => ContactRoles::Evaluators->value]
-            )
+                    ->hasAttached(
+                        Contact::factory()->count(7),
+                        ['role' => ContactRoles::Evaluated->value]
+                    )
+                    ->hasAttached(
+                        Contact::factory()->count(3),
+                        ['role' => ContactRoles::Evaluators->value]
+                    )
 
-            ->create(['user_id' => Auth::id()]);*/
+                    ->create(['user_id' => Auth::id()]);*/
 
         $user = User::factory()->create();
         ActingAs($user);
@@ -38,7 +39,7 @@ it('is possible to retrieve many evaluated and many evaluators from a jiri',
             ['role' => ContactRoles::Evaluated->value]
         );
 
-        //ajouter 3 évaluateurs
+        // ajouter 3 évaluateurs
         $jiri->contacts()->attach(
             Contact::factory()->for($user)->count(3)->create()->pluck('id'),
             ['role' => ContactRoles::Evaluators->value]
@@ -79,13 +80,13 @@ it('allows an evaluated contact to be linked to a homework through an implementa
         $project = Project::factory()->for($user)->create();
         $evaluated = Contact::factory()->for($user)->create();
 
-        $jiri->contacts()->attach($evaluated->id, ['role' => ContactRoles::Evaluated->value]);      //attendance
-        $jiri->projects()->attach($project->id);            //implémentation
+        $jiri->contacts()->attach($evaluated->id, ['role' => ContactRoles::Evaluated->value]);      // attendance
+        $jiri->projects()->attach($project->id);            // implémentation
 
         $homework = Homework::first();
 
         // Act
-        $evaluated->homeworks()->attach($homework->id);     //attach geht nur mit BelongsToMany relation
+        $evaluated->homeworks()->attach($homework->id);     // attach geht nur mit BelongsToMany relation
 
         // Assert
         \Pest\Laravel\assertDatabaseCount('implementations', 1);

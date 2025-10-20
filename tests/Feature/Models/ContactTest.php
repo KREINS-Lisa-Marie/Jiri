@@ -3,6 +3,7 @@
 use App\Models\Contact;
 use App\Models\Jiri;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
 //           ****    still in production at the moment   ****
@@ -16,7 +17,7 @@ it('it is possible to associate many Jiris to a Contact',
         $contact = Contact::factory()->for($user)
             ->hasAttached(
                 Jiri::factory()->for($user)->count(3)->state(['user_id' => $user->id]),
-                fn ()=> ['role' => 'evaluator']
+                fn () => ['role' => 'evaluator']
             )->create();
 
         // assert

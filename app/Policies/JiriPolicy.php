@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Jiri;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class JiriPolicy
 {
@@ -35,7 +34,6 @@ class JiriPolicy
     /**
      * Determine whether the user can update the model.
      */
-
     public function update(User $user, Jiri $jiri): bool
     {
         return $user->id === $jiri->user_id;

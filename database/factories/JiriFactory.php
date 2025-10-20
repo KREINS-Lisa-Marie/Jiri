@@ -19,7 +19,7 @@ class JiriFactory extends Factory
             'description' => $this->faker->optional()->text(),
             /*            'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),*/
-            'user_id' => rand(1, count(User::all())-1)
+            'user_id' => rand(1, count(User::all()) - 1),
         ];
     }
 

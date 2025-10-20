@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ContactRoles;
 use App\Http\Requests\StoreContactRequest;
 use App\Jobs\ProcessUploadContactAvatar;
 use App\Models\Contact;
@@ -12,10 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use Intervention\Image\Laravel\Facades\Image;
-
-;
 
 class ContactController extends Controller
 {
@@ -24,32 +19,33 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Auth::user()->contacts;
-        //dd($contacts);
+        // dd($contacts);
 
         return view('contacts.index', compact('contacts'));
     }
 
-
     public function store(StoreContactRequest $request): RedirectResponse
     {
+
         // $this->authorize('store', $contact);
-        $validated = $request->validated();
-        //Gate::authorize('create', $contact);
-        //Gate::authorize('store', $contact);
-        //if ($request->user()->cannot('store', $contact)) {
+        // Gate::authorize('create', $contact);
+        // Gate::authorize('store', $contact);
+        // if ($request->user()->cannot('store', $contact)) {
         //  abort(403);
-        //}
-        //dd($validated);
+        // }
+        // dd($validated);
+        $validated = $request->validated();
 
-        if ($request->hasFile('avatar')) {
-
-            $new_original_file_name = uniqid() . '.' . config('contactavatar.jpg_image_type');
+        if ($validated['avatar']) {
+            $new_original_file_name = uniqid().'.'.config('contactavatar.jpg_image_type');
 
             $full_path_to_original = Storage::putFileAs(
-                    config('contactavatar.originals_path'),
-                    $validated['avatar'],
-                    $new_original_file_name);
-                    $validated['avatar'] = $new_original_file_name;
+                config('contactavatar.originals_path'),
+                $validated['avatar'],
+                $new_original_file_name);
+
+            $validated['avatar'] = $new_original_file_name;
+
             if ($full_path_to_original) {
                 ProcessUploadContactAvatar::dispatch($full_path_to_original, $new_original_file_name);
             } else {
@@ -62,22 +58,22 @@ class ContactController extends Controller
 
 
                     Storage::disk('public')->put($original_file_path, $image->toString());
-                    //dd($path);
-                    //dd($path);
-                    //$file_name = uniqid('contact_').'.jpg';
-                    //$path ="contact/$file_name";
-                    //\Storage::disk('public')->put($path, $request->file('avatar'));
-                    $validated['avatar'] = $original_file_path;*/
+                    dd($path);
+                    $file_name = uniqid('contact_').'.jpg';
+                    $path ="contact/$file_name";
+                    Storage::disk('public')->put($path, $request->file('avatar'));
+                    $validated['avatar'] = $original_file_path;
+        */
         $contact = auth()->user()->contacts()->create($validated);
-        //Contact::create($validated);
-        return redirect()->route('contacts.show', $contact /*$contact->id*/);
-    }
 
+        // Contact::create($validated);
+        return redirect()->route('contacts.show', $contact /* $contact->id */);
+    }
 
     public function show(Contact $contact)
     {
-        //$contacts = auth()->user()->contacts;
-        return View('contacts.show', compact(/*'contacts',*/ 'contact'));
+        // $contacts = auth()->user()->contacts;
+        return View('contacts.show', compact(/* 'contacts', */ 'contact'));
     }
 
     public function create()
@@ -85,37 +81,32 @@ class ContactController extends Controller
         return view('contacts.create');
     }
 
-
     public function edit(Contact $contact)
     {
         return view('contacts.edit', compact('contact'));
     }
 
-
     public function update(Contact $contact, Request $request)
     {
-        //validation
+        // validation
         $validated_data = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|unique:contacts',
+            'email' => 'required|email|unique:contacts',
             'avatar' => 'nullable|image',
         ]);
 
-
-        //update et insert
+        // update et insert
         $contact->upsert(
             [
                 [
-                    'id' => $contact->id,
                     'name' => $validated_data['name'],
-                    'email' => $validated_data['email'] === $contact['email'] ? $contact['email'] : $validated_data['email'],
+                    'email' => $validated_data['email'],
                     'avatar' => $validated_data['avatar'],
                     'user_id' => Auth::user()->id,
                 ],
             ],
-            'id',
+            'email',
             ['name', 'email', 'avatar']);
-
 
         return redirect(route('contacts.show', $contact));
     }

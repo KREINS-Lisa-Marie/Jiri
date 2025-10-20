@@ -30,21 +30,19 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('test'),
         ]);
 
+        $user2 = User::factory()->create();
 
+        Jiri::factory()->count(3)->create([
+            'user_id' => 1,
+        ]);
 
-       $user2 = User::factory()->create();
+        Jiri::factory()->count(5)->create([
+            'user_id' => 2,
+        ]);
 
-                Jiri::factory()->count(3)->create([
-                    'user_id' => 1,
-                ]);
-
-                        Jiri::factory()->count(5)->create([
-                            'user_id' => 2,
-                        ]);
-
-                                Contact::factory()->count(3)->for($user)->create();
-                                Contact::factory()->count(3)->for($user2)->create();
-                                Project::factory()->count(3)->for($user)->create();
-                                Project::factory()->count(3)->for($user2)->create();
+        Contact::factory()->count(3)->for($user)->create();
+        Contact::factory()->count(3)->for($user2)->create();
+        Project::factory()->count(3)->for($user)->create();
+        Project::factory()->count(3)->for($user2)->create();
     }
 }

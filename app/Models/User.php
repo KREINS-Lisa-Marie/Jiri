@@ -57,8 +57,8 @@ class User extends Authenticatable
         return $this->hasMany(Contact::class);
     }
 
-    public function projects():HasMany
+    public function projects(): HasMany
     {
-        return$this->hasMany(Project::class);
+        return $this->hasMany(Project::class);
     }
 }

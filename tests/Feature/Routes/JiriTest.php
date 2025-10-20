@@ -62,6 +62,7 @@ it('creates a Contact and redirects to the contact index', function () {
     $contact = Contact::factory()->for($user)->make([
         'name' => 'Dominique Vilain',
         'email' => 'dominique.vilain@hepl.be',
+        'avatar'=>'',
     ])->toArray();
 
     // act
@@ -70,7 +71,7 @@ it('creates a Contact and redirects to the contact index', function () {
     // assert
     $response->assertStatus(302);
     $contact = Contact::first();
-    $response->assertRedirect(route("contacts.show", $contact->id));
+    $response->assertRedirect(route('contacts.show', $contact->id));
     \Pest\Laravel\assertDatabaseHas('contacts',
         ['name' => 'Dominique Vilain',
             'email' => 'dominique.vilain@hepl.be',
@@ -102,16 +103,16 @@ it('creates a Project and redirects to the project index', function () {
     actingAs($user);
 
     $project = Project::factory()->for($user)->make([
-        'name'=>'bonjour',
+        'name' => 'bonjour',
 
     ])->toArray();
 
     // act
-    $response = $this->post(route('projects.store', $project));
-
+    $response = $this->post(route('projects.store'),$project);
+    //$response->dump();
     // assert
     $response->assertStatus(302);
-    $response->assertRedirect(route('projects.index',$project->id));
+    $response->assertRedirect(route('projects.index'));
     \Pest\Laravel\assertDatabaseHas('projects', [
         'name' => $project['name'],
     ]);
@@ -124,7 +125,6 @@ it('displays a list of Jiris on the jiri index', function () {
     actingAs($user);
 
     $jiris = Jiri::factory(3)->create(['user_id' => $user->id]);
-
 
     // act
 
@@ -210,19 +210,19 @@ it('verifies that by clicking on a Projectlink, a user is redirected to the page
     $response->assertStatus(200);
     $response->assertSee($project->first()->name, false);
 
-   /*
-    $user = User::factory()->create(['user_id' => 115]);
-    actingAs($user);
+    /*
+     $user = User::factory()->create(['user_id' => 115]);
+     actingAs($user);
 
 
-    $projects = Project::factory(3)->for($user)->create();
+     $projects = Project::factory(3)->for($user)->create();
 
-    // act
-    $response = $this->get('projects/'.$projects->first()->id);
+     // act
+     $response = $this->get('projects/'.$projects->first()->id);
 
-    // assert
-    $response->assertStatus(200);
-    $response->assertSee($projects->first()->name, false);*/
+     // assert
+     $response->assertStatus(200);
+     $response->assertSee($projects->first()->name, false);*/
 });
 
 it('verifies that the obligations are respected', function () {
@@ -230,7 +230,7 @@ it('verifies that the obligations are respected', function () {
     $user = User::factory()->create();
     actingAs($user);
 
-    $jiris = Jiri::factory()->create(['user_id' => $user->id
+    $jiris = Jiri::factory()->create(['user_id' => $user->id,
     ]);
 
     // act
@@ -241,7 +241,7 @@ it('verifies that the obligations are respected', function () {
     $response->assertValid();
 
     // arrange
-    $contacts = Contact::factory()->create(['user_id'=>$user->id]);
+    $contacts = Contact::factory()->create(['user_id' => $user->id]);
 
     // act
     $response = $this->get('contacts/');

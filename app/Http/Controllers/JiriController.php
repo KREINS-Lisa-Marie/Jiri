@@ -19,13 +19,13 @@ class JiriController extends Controller
 
     public function store(StoreJiriRequest $request, Jiri $jiri)
     {
-       // $this->authorize('store', $jiri);
+        // $this->authorize('store', $jiri);
         $validated = $validated = $request->validated();
 
         $jiri = auth()->user()->jiris()->create($validated);
 
         //  kann auch private f° damit machen
-        if (!empty($validated['projects'])) {
+        if (! empty($validated['projects'])) {
             $jiri->projects()->attach($validated['projects']);
         }
 
@@ -34,7 +34,7 @@ class JiriController extends Controller
                 }*/
 
         //  kann auch private f° damit machen
-        if (!empty($validated['contacts'])) {
+        if (! empty($validated['contacts'])) {
             foreach ($validated['contacts'] as $id => $contact) {
                 $jiri
                     ->contacts()
@@ -51,8 +51,8 @@ class JiriController extends Controller
 
     public function index()
     {
-/*        $jiris = Jiri::all();
-        $users = User::all();*/
+        /*        $jiris = Jiri::all();
+                $users = User::all();*/
 
         /*foreach ($users as $user) {
             if ($user != auth()->user()) {
@@ -61,8 +61,7 @@ class JiriController extends Controller
         }*/
         $user = Auth::user();
 
-        $jiris =  $user->jiris;
-
+        $jiris = $user->jiris;
 
         return View('jiris.index', compact('jiris', 'user'));
     }
@@ -74,6 +73,7 @@ class JiriController extends Controller
         if ($jiri->user_id !== $user->id) {
             abort(403);
         }
+
         return View('jiris.show', compact('jiri', 'user'));
     }
 
@@ -83,8 +83,8 @@ class JiriController extends Controller
         $contacts = $user->contacts();
         $projects = $user->projects();
 
-        //$contacts = Contact::all();
-        //$projects = Project::all();
+        // $contacts = Contact::all();
+        // $projects = Project::all();
 
         return view('jiris.create', compact('contacts', 'projects'));
 
@@ -97,7 +97,6 @@ class JiriController extends Controller
         $contacts = $user->contacts();
         $projects = $user->projects();
 
-
         /*ça c'est tous les utilisateurs
          * $contacts = Contact::all();
         $projects = Project::all();*/
@@ -107,14 +106,14 @@ class JiriController extends Controller
 
     public function update(Request $request, Jiri $jiri)
     {
-        //$this->authorize('update', $jiri);
-/*        if ($request->user()->cannot('update', $jiri)) {
-            abort(403);
-        }
-        $this->authorize('update', $jiri);
-        $user = Auth::user();*/
+        // $this->authorize('update', $jiri);
+        /*        if ($request->user()->cannot('update', $jiri)) {
+                    abort(403);
+                }
+                $this->authorize('update', $jiri);
+                $user = Auth::user();*/
 
-        //validation
+        // validation
         $validated_data = $request->validate([
             'name' => 'required',
             'date' => 'required|date',
@@ -124,8 +123,7 @@ class JiriController extends Controller
             'contacts.*.role' => Rule::enum(ContactRoles::class),
         ]);
 
-
-       //update et insert
+        // update et insert
         $jiri->upsert(
             [
                 [
@@ -138,7 +136,6 @@ class JiriController extends Controller
             ],
             'id',
             ['name', 'description', 'date']);
-
 
         return view('jiris.show', compact('jiri'));
     }

@@ -27,11 +27,11 @@ it(
     ]
 );
 
-it('displays an error message when the name is misssing',
+/*it('displays an error message when the name is misssing',
     function () {
         // arrange
 
         // act
 
     }
-);
+);*/

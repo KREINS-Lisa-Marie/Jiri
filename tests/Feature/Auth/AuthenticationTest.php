@@ -5,7 +5,6 @@ use App\Models\User;
 
 use function Pest\Laravel\actingAs;
 
-
 it('redirects to the jiri index identified as the home page after a successfull login', function () {
 
     $password = 'test';
@@ -29,7 +28,6 @@ it('redirects to the jiri index identified as the home page after a successfull 
 
 });
 
-
 it('verifies that a user who is not connected can not access to the jiris page', function () {
 
     $response = $this->get(route('jiris.index'));
@@ -40,11 +38,7 @@ it('verifies that a user who is not connected can not access to the jiris page',
      ->assertSeeInOrder(['<form', 'email', 'Mot de passe', '<button', 'Identifiez-vous'], true);*/
 });
 
-it('verifies that the connected user is redirected to the jiris index page when accessing the login page and that the guest ist redirected to the login page when accessing the jiris index page', function () {
-
-
-
-});
+//it('verifies that the connected user is redirected to the jiris index page when accessing the login page and that the guest ist redirected to the login page when accessing the jiris index page', function () {});
 
 it('verifies if that a guest cannot access the jiri page', function () {
 
@@ -91,9 +85,8 @@ it('verifies that a user cannot modify a jiri from another user', function () {
 
     // faut faire policies
 
-
     $response->assertStatus(403);
-       // ->assertSee();
+    // ->assertSee();
 
 });
 

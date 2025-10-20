@@ -16,15 +16,18 @@ class Homework extends Model
     {
         return $this->belongsTo(Jiri::class);
     }
+
     public function contacts(): BelongsToMany
     {
         return $this->belongsToMany(Contact::class, 'implementations');
     }
+
     public function implementations(): HasMany
     {
         return $this->hasMany(Implementation::class);
     }
-    public function projects():HasOne
+
+    public function projects(): HasOne
     {
         return $this->hasOne(Project::class);
     }
