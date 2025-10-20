@@ -17,8 +17,7 @@ class ProcessUploadContactAvatar implements ShouldQueue
     public function __construct(
         public $full_path_to_original,
         public $new_original_file_name
-    )
-    {
+    ) {
         //
     }
 
@@ -37,10 +36,11 @@ class ProcessUploadContactAvatar implements ShouldQueue
         foreach ($sizes as $size) {
             $variant = clone $image;
             // Redimensionner l'image
-            $resizedImage = $variant->scale($size['width']) ;
-            $resizedImage->save(Storage::disk('public')->path(config('contactavatar.variant_path')));
-           // $image->aspectRatio();  // Conserver l'aspect ratio
-            //$image->upsize();  // Ne pas agrandir l'image si elle est plus petite
+            $variant->scale($size['width']);
+            $variant_path = sprintf(config('contactavatar.variants_path_pattern'),$size['width'],$size['height']);
+            Storage::put($variant_path.'/'.$this->new_original_file_name, $variant->encodeByExtension('jpg',80));
+            // $image->aspectRatio();  // Conserver l'aspect ratio
+            // $image->upsize();  // Ne pas agrandir l'image si elle est plus petite
 
         }
     }

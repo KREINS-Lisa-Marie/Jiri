@@ -12,6 +12,6 @@ return [
     'legend_projects' => 'The Projects',
     'modify_a_jiri' => 'Modify a Jiri',
     'modify_a_contact' => 'Modify a Contact',
-    'legend_create_a_contact'=> 'The contact',
+    'legend_create_a_contact' => 'The contact',
     'create_a_contact' => 'Create a Contact',
 ];

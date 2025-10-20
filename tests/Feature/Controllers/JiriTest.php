@@ -18,7 +18,7 @@ beforeEach(function () {
 test('the application returns a successful response', function () {
     $response = $this->get('/');
 
-    /*    $response->assertStatus(200); */
+    $response->assertStatus(200);
 });
 
 /*it('creates a Jiri and redirects to the jiri index',
@@ -48,9 +48,9 @@ it('creates successfully a Jiri from the data provided by the request',
         $user = User::factory()->create();
         actingAs($user);
 
-        //$jiri = Jiri::factory()->for($user)->create();
+        // $jiri = Jiri::factory()->for($user)->create();
         $jiri = Jiri::factory()->for($user)->create();
-        //$jiri = Jiri::factory()->raw();
+        // $jiri = Jiri::factory()->raw();
 
         // act
         $response = $this->post(route('jiris.store'), $jiri->toArray());
@@ -88,8 +88,8 @@ it(
     'fails to create a new jiri in database when the date is missing in the request',
     function () {
         // arrange
-        //$user = User::factory()->create();
-        //actingAs($user);
+        // $user = User::factory()->create();
+        // actingAs($user);
 
         $jiri = Jiri::factory()
             ->withoutDate()
@@ -121,12 +121,11 @@ it(
 
         // assert
         $response->assertInvalid('date');
-        //$response->assertSessionHasErrors('date');
+        // $response->assertSessionHasErrors('date');
         \Pest\Laravel\assertDatabaseEmpty('jiris');
 
     }
 );
-
 
 /*it('creates a Project and redirects to the project index', function () {
     //arrange
@@ -194,7 +193,7 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
         ->create();
 
     // act
-    $response = $this->get('jiris/' . $jiris->first()->id);
+    $response = $this->get('jiris/'.$jiris->first()->id);
 
     // assert
     $response->assertStatus(200);
@@ -207,7 +206,7 @@ it('displays the details page of a contact', function () {
     $user = User::factory()->create();
     actingAs($user);
 
-    $contact = Contact::factory()->for($user)->create();          //changer !!!  ≠ contact
+    $contact = Contact::factory()->for($user)->create();          // changer !!!  ≠ contact
 
     // act
     $response = $this->get(route('contacts.show', compact('contact')));
@@ -374,9 +373,7 @@ it('creates a jiri from the data submitted by the request', function () {
 
     $this->assertDatabaseHas('jiris', [
         'name' => $data['name'],
-        //'description' => $data['description'],
+        // 'description' => $data['description'],
         'date' => $data['date'],
     ]);
 });
-
-

@@ -1,11 +1,5 @@
 <?php
 
-use App\Models\Jiri;
-use App\Models\User;
-
-use function Pest\Laravel\actingAs;
-
-
 it('redirects to the register page when the register link is clicked', function () {
 
     $response = $this->get(route('register'));
@@ -18,10 +12,10 @@ it('redirects to the register page when the register link is clicked', function 
 
 it('can display the register form', function () {
 
-        $response = $this->get(route('register'));
+    $response = $this->get(route('register'));
 
-        $response->assertStatus(200)
-            ->assertSeeInOrder(['Créez un compte', '<form', 'email', 'Mot de passe', '<button', 'Créer un compte']);
+    $response->assertStatus(200)
+        ->assertSeeInOrder(['Créez un compte', '<form', 'email', 'Mot de passe', '<button', 'Créer un compte']);
 
 });
 

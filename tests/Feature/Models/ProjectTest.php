@@ -3,6 +3,7 @@
 use App\Models\Jiri;
 use App\Models\Project;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
 it('is possible to retrieve many jiris from a project',
@@ -13,7 +14,7 @@ it('is possible to retrieve many jiris from a project',
         actingAs($user);
 
         Jiri::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $project = Project::factory()->for($user)

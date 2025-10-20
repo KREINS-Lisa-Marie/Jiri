@@ -1,9 +1,6 @@
 <?php
 
-use App\Models\Jiri;
 use App\Models\User;
-
-use function Pest\Laravel\actingAs;
 
 it('can display the login form', function () {
 
@@ -40,7 +37,6 @@ it('redirects to the jiri index identified as the home page after a successfull 
 
 });
 
-
 it('verifies that a user who is not connected can not access to the jiris page', function () {
 
     $response = $this->get(route('jiris.index'));
@@ -51,11 +47,7 @@ it('verifies that a user who is not connected can not access to the jiris page',
      ->assertSeeInOrder(['<form', 'email', 'Mot de passe', '<button', 'Identifiez-vous'], true);*/
 });
 
-it('verifies that the connected user is redirected to the jiris index page when accessing the login page and that the guest ist redirected to the login page when accessing the jiris index page', function () {
-
-
-
-});
+//it('verifies that the connected user is redirected to the jiris index page when accessing the login page and that the guest ist redirected to the login page when accessing the jiris index page', function () {});
 
 /* montre nicht homepage wenn nicht angemeldet */
 

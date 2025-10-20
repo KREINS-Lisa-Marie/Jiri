@@ -18,13 +18,14 @@ class Project extends Model
     {
         return $this->belongsToMany(Jiri::class, 'homeworks');
     }
-    public function user():BelongsTo
+
+    public function user(): BelongsTo
     {
-       return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
-    public function homeworks():HasOne
+
+    public function homeworks(): HasOne
     {
         return $this->hasOne(Homework::class);
     }
-
 }
