@@ -31,6 +31,8 @@ class ProcessUploadContactAvatar implements ShouldQueue
             Storage::get($this->full_path_to_original)
         );
         $sizes = config('contactavatar.sizes');
+        $extension = config('contactavatar.jpg_image_type');
+        $compression = config('contactavatar.jpg_compression');
 
         // Créer les différentes tailles d'images
         foreach ($sizes as $size) {
@@ -38,7 +40,7 @@ class ProcessUploadContactAvatar implements ShouldQueue
             // Redimensionner l'image
             $variant->scale($size['width']);
             $variant_path = sprintf(config('contactavatar.variants_path_pattern'),$size['width'],$size['height']);
-            Storage::put($variant_path.'/'.$this->new_original_file_name, $variant->encodeByExtension('jpg',80));
+            Storage::put($variant_path.'/'.$this->new_original_file_name, $variant->encodeByExtension($extension, $compression));
             // $image->aspectRatio();  // Conserver l'aspect ratio
             // $image->upsize();  // Ne pas agrandir l'image si elle est plus petite
 

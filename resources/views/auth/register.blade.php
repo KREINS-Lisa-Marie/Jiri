@@ -1472,8 +1472,20 @@
     </h1>
     <!-- Icône chapeau -->
 
-    <form action="{{ route('login.store') }}" method="post" class=" text-black flex flex-col">
+    <form action="{{ route('register.store') }}" method="post" class=" text-black flex flex-col">
         @csrf
+        <div class="flex flex-col">
+            <label for="name" class="p-2 text-gray-500">
+                {{__('register.name')}}
+            </label>
+            @error('name')
+            <p class="error text-red-500">
+                {{$message}}
+            </p>
+            @enderror
+            <input type="text" id="name" name="name" class="border border-black rounded p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" value="{{old('name')}}">
+
+        </div>
         <div class="flex flex-col">
             <label for="email" class="p-2 text-gray-500">
                 {{__('register.email')}}
@@ -1490,7 +1502,7 @@
             <label for="password" class="p-2 text-gray-500">
                 {{__('register.password')}}
             </label>
-            @error('verification_password')
+            @error('password')
             <p class="error text-red-500">
                 {{$message}}
             </p>
@@ -1501,7 +1513,7 @@
             <label for="confirm_password" class="p-2 text-gray-500">
                 {{__('register.confirmation_password')}}
             </label>
-            @error('password')
+            @error('verification_password')
             <p class="error text-red-500">
                 {{$message}}
             </p>
