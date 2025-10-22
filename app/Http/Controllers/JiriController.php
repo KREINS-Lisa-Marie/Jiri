@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContactRoles;
+use App\Events\JiriCreatedEvent;
 use App\Http\Requests\StoreJiriRequest;
+use App\Mail\JiriCreatedMail;
 use App\Models\Contact;
 use App\Models\Jiri;
 use App\Models\Project;
@@ -44,6 +46,11 @@ class JiriController extends Controller
                     );
             }
         }
+
+        //\Mail::to($request->user())->send(new JiriCreatedMail($jiri));
+        //\Mail::to($request->user())->queue(new JiriCreatedMail($jiri));
+        event(new JiriCreatedEvent($jiri));
+
 
         return redirect(route('jiris.index'));
         // to_route('jiris.index');
