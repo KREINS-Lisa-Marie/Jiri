@@ -43,4 +43,29 @@ class ProjectController extends Controller
     {
         return view('projects.create');
     }
+    public function edit(Project $project)
+    {
+        return view('projects.edit', compact('project'));
+    }
+
+
+    public function update(Project $project, Request $request)
+    {
+        // validation
+        $validated_data = $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        // update et insert
+        $project->upsert(
+            [
+                [
+                    'name' => $validated_data['name'],
+                ],
+            ],
+            'id',
+            ['name']);
+
+        return redirect(route('projects.update', $project));
+    }
 }

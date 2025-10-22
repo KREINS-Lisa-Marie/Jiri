@@ -60,3 +60,15 @@ it('sends the email using the configured transport layer', function () {
    // dump($messages['messages']);
 
 });
+
+
+it('queues the sending of the jiri created mail after the jiri created event has been fired', function () {
+
+    \Illuminate\Support\Facades\Mail::fake();
+     $jiri = Jiri::factory()->for(User::factory())->create();
+
+    event(new JiriCreatedEvent($jiri));
+
+    Mail::assertQueued(App\Mail\JiriCreatedMail::class);
+
+});

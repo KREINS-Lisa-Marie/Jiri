@@ -6,6 +6,10 @@ return [
     'originals_path' => 'images/contacts/originals',
     'variants_path_pattern' => 'images/contacts/variants/%sx%s',
     'sizes' => [
+        'mini' => [
+            'height' => 100,
+            'width' => 100,
+        ],
         'small' => [
             'height' => 300,
             'width' => 300,

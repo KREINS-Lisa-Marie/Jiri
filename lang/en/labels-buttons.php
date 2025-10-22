@@ -17,4 +17,5 @@ return [
     'create_a_project' => 'Create a Project',
     'evaluators'=>"Evaluator",
     'evaluated'=>"Evaluated",
+    'modify_a_project' => 'Save',
 ];

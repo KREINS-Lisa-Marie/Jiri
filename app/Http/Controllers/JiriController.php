@@ -10,10 +10,15 @@ use App\Models\Contact;
 use App\Models\Jiri;
 use App\Models\Project;
 use App\Models\User;
+use App\Observers\JiriObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+
+
+#[ObservedBy([JiriObserver::class])]
 
 class JiriController extends Controller
 {
@@ -46,15 +51,18 @@ class JiriController extends Controller
                     );
             }
         }
-
         //\Mail::to($request->user())->send(new JiriCreatedMail($jiri));
         //\Mail::to($request->user())->queue(new JiriCreatedMail($jiri));
-        event(new JiriCreatedEvent($jiri));
 
+
+        //event(new JiriCreatedEvent($jiri));
 
         return redirect(route('jiris.index'));
         // to_route('jiris.index');
     }
+
+
+
 
     public function index(Request $request)
     {
