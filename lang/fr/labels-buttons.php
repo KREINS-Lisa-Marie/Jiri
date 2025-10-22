@@ -17,4 +17,5 @@ return [
     'create_a_project' => 'Créez un Projet',
     'evaluators'=>"Evaluateur",
     'evaluated'=>"Evaluée",
+    'modify_a_project' => 'Enregistrer',
 ];

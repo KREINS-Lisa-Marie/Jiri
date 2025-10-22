@@ -56,104 +56,102 @@
 </html>
 --}}
 
-    <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Lisa-Marie">
-    <meta name="keywords" content="jiris">
-    <title>Création d'un Jiri</title>
-</head>
+@component('layouts.app')
 <body>
-<h1>
-    {{__('headings.create_a_jiri')}}
-</h1>
-<form action="{!! route('jiris.store') !!}" method="post">
-    @csrf
-    <fieldset class="jiri_section">
-        <legend>
-            {{__('labels-buttons.legend_jiri')}}
-        </legend>
-        <div class="field">
-            <div class="text_field">
-                <label for="name">{{__('labels-buttons.name')}}</label>
-                <input type="text" name="name" id="name" placeholder="John Doe" value="{!! old('name') !!}">
-                @error('name')
-                <p class="error text-red-500">
-                    {{$message}}
-                </p>
-                @enderror
-            </div>
-            <div class="text_field">
-        <label for="date">{{__('labels-buttons.date')}}</label>
-        <input type="date" name="date" id="date" placeholder="10/05/2025" value="{!! old('date') !!}">
-                @error('date')
-                <p class="error text-red-500">
-                    {{$message}}
-                </p>
-                @enderror
-                </div>
-            <div class="textarea_field">
-        <label for="description">
-            {{__('labels-buttons.description')}}
-        </label>
-        <textarea id="description" name="description" placeholder="Le Jury ... évalue...">{!! old('description') !!}</textarea>
-                </div>
-        </div>
-    </fieldset>
-    <fieldset class="contact_section">
-        <legend>
-            {{__('labels-buttons.legend_contacts')}}
-        </legend>
-        <div class="field">
 
-            @foreach($contacts as $contact)
-                <div class="single_contact">
-                    <label for="contacts{!! $contact->id !!}">{!! $contact->name !!}</label>
-                    <input type="checkbox" name="contacts[{!! $contact->id !!}]"
-                           id="contact{!! $contact->id !!}"
-                           value="{!! $contact->id !!}"
-                           onchange="toggleRole(this)">
-                    <select name="contacts[{!! $contact->id !!}][role]" id="role{!! $contact->id !!}" disabled>
-                        @foreach(\App\Enums\ContactRoles::cases() as $role)
-                            <option value="{{$role->value}}">{{$role->value}}</option>
-                        @endforeach
-                    </select>
+<main class="px-6 py-6 flex items-center flex-col ">
+    <h1 class="font-bold text-4xl pb-20">
+        {{__('headings.create_a_jiri')}}
+    </h1>
+    <form action="{!! route('jiris.store') !!}" method="post" class="bg-blue-50 rounded-2xl shadow-2xl p-10 min-w-2xl">
+        @csrf
+        <fieldset class="jiri_section pb-10">
+            <legend class="text-3xl font-medium pl-2 pb-3">
+                {{__('labels-buttons.legend_jiri')}}
+            </legend>
+            <div class="field">
+                <div class="text_field pb-5 flex flex-col">
+                    <label for="name" class="font-bold pb-2">{{__('labels-buttons.name')}}</label>
+                    <input type="text" name="name" id="name" placeholder="John Doe" value="{!! old('name') !!}" class="bg-white rounded-xl p-2">
+                    @error('name')
+                    <p class="error text-red-500">
+                        {{$message}}
+                    </p>
+                    @enderror
                 </div>
-            @endforeach
-
-        </div>
-    </fieldset>
-<fieldset class="project_section">
-<legend>
-    {{__('labels-buttons.legend_projects')}}
-</legend>
-    <div class="field">
-        @foreach($projects as $project)
-            <div class="single_project">
-                <label for="projects[{!! $project->id !!}]">{!! $project->name !!}</label>
-                <input type="checkbox" id="projects{!! $project->id !!}" name="projects[{!! $project->id !!}]" value="{!! $project->id !!}">
+                <div class="text_field pb-5 flex flex-col">
+                    <label for="date" class="font-bold pb-2">{{__('labels-buttons.date')}}</label>
+                    <input type="date" name="date" id="date" placeholder="10/05/2025" value="{!! old('date') !!}" class="bg-white rounded-xl p-2">
+                    @error('date')
+                    <p class="error text-red-500">
+                        {{$message}}
+                    </p>
+                    @enderror
+                </div>
+                <div class="textarea_field pb-5 flex flex-col">
+                    <label for="description" class="font-bold pb-2" >
+                        {{__('labels-buttons.description')}}
+                    </label>
+                    <textarea id="description" name="description"
+                              placeholder="Le Jury ... évalue..." class="bg-white rounded-xl p-2">{!! old('description') !!}</textarea>
+                </div>
             </div>
-        @endforeach
-        {{--<div class="single_project">
-            <label for="project_name">CV</label>
-            <input type="checkbox" id="project_name" name="projects[1]" value="1">
-        </div>
-        <div class="single_project">
-            <label for="project_name">Portfolio</label>
-            <input type="checkbox" id="project_name" name="projects[2]" value="2">
-        </div>
-        <div class="single_project">
-            <label for="project_name">Client</label>
-            <input type="checkbox" id="project_name" name="projects[3]" value="3">
-        </div>--}}
-    </div>
-</fieldset>
-    <button type="submit">
-        {{__('labels-buttons.create_a_jiri')}}
-    </button>
-</form>
+        </fieldset>
+        <fieldset class="contact_section pb-10">
+            <legend class="text-3xl font-medium pl-2 pb-3">
+                {{__('labels-buttons.legend_contacts')}}
+            </legend>
+            <div class="field">
+
+                @foreach($contacts as $contact)
+                    <div class="single_contact pb-4 flex gap-3">
+                        <div class="label_checkbox pb-4 flex flex-row-reverse justify-end">
+                            <label for="contacts{!! $contact->id !!}">{!! $contact->name !!}</label>
+                            <input type="checkbox" name="contacts[{!! $contact->id !!}]"
+                                   id="contact{!! $contact->id !!}"
+                                   value="{!! $contact->id !!}"
+                                   onchange="toggleRole(this)" class="mr-4"></div>
+                        <select name="contacts[{!! $contact->id !!}][role]" id="role{!! $contact->id !!}" disabled class="bg-cyan-600 text-white p-2 rounded-2xl">
+                            @foreach(\App\Enums\ContactRoles::cases() as $role)
+                                <option value="{{$role->value}}" >{{$role->value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endforeach
+
+            </div>
+        </fieldset>
+        <fieldset class="project_section pb-10">
+            <legend class="text-3xl font-medium pl-2 pb-3">
+                {{__('labels-buttons.legend_projects')}}
+            </legend>
+            <div class="field">
+                @foreach($projects as $project)
+                    <div class="single_project pb-4 flex flex-row-reverse justify-end">
+                        <label for="projects[{!! $project->id !!}]">{!! $project->name !!}</label>
+                        <input type="checkbox" id="projects{!! $project->id !!}" name="projects[{!! $project->id !!}]"
+                               value="{!! $project->id !!}" class="mr-4">
+                    </div>
+                @endforeach
+                {{--<div class="single_project">
+                    <label for="project_name">CV</label>
+                    <input type="checkbox" id="project_name" name="projects[1]" value="1">
+                </div>
+                <div class="single_project">
+                    <label for="project_name">Portfolio</label>
+                    <input type="checkbox" id="project_name" name="projects[2]" value="2">
+                </div>
+                <div class="single_project">
+                    <label for="project_name">Client</label>
+                    <input type="checkbox" id="project_name" name="projects[3]" value="3">
+                </div>--}}
+            </div>
+        </fieldset>
+        <button type="submit" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl">
+            {{__('labels-buttons.create_a_jiri')}}
+        </button>
+    </form>
+</main>
 
 <script>
     // wird aufgerufen wenn onchange="toggleRole(this)" aufgerufen wird Immer wenn Kästchen anklickst oder abklickst
@@ -167,7 +165,7 @@
 </script>
 </body>
 
-</html>
+@endcomponent
 
 {{--            @foreach($contacts as $contact)
     <label for="contact_name">{!! $contact->name !!}</label>

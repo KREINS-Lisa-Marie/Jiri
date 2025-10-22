@@ -14,7 +14,7 @@ class JiriFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => strtolower($this->faker->name()),
             'date' => Carbon::now(),
             'description' => $this->faker->optional()->text(),
             /*            'created_at' => Carbon::now(),
