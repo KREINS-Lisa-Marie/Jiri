@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="{!! app()->getLocale() !!}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,8 +12,8 @@
     <h1>Modifier le Contact : {{$contact->name}}</h1>
 
     <form action='{{route('contacts.update', $contact->id)}}' method="post">
-        @csrf
         @method('PATCH')
+        @csrf
         <fieldset class="contact_section">
             <legend>
                 {{__('labels-buttons.legend_contacts')}}
@@ -38,6 +38,7 @@
                     @enderror
                 </div>
                 <div class="single_contact">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
                     <label for="avatar">{{__('labels-buttons.avatar')}}</label>
                     <input type="file" id="avatar" name="avatar" >
                     @error('avatar')

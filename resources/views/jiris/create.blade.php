@@ -56,7 +56,6 @@
 </html>
 --}}
 
-
     <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -79,7 +78,7 @@
         <div class="field">
             <div class="text_field">
                 <label for="name">{{__('labels-buttons.name')}}</label>
-                <input type="text" name="name" id="name">
+                <input type="text" name="name" id="name" placeholder="John Doe" value="{!! old('name') !!}">
                 @error('name')
                 <p class="error text-red-500">
                     {{$message}}
@@ -88,7 +87,7 @@
             </div>
             <div class="text_field">
         <label for="date">{{__('labels-buttons.date')}}</label>
-        <input type="date" name="date" id="date">
+        <input type="date" name="date" id="date" placeholder="10/05/2025" value="{!! old('date') !!}">
                 @error('date')
                 <p class="error text-red-500">
                     {{$message}}
@@ -99,7 +98,7 @@
         <label for="description">
             {{__('labels-buttons.description')}}
         </label>
-        <textarea name="description"></textarea>
+        <textarea id="description" name="description" placeholder="Le Jury ... évalue...">{!! old('description') !!}</textarea>
                 </div>
         </div>
     </fieldset>
@@ -108,37 +107,21 @@
             {{__('labels-buttons.legend_contacts')}}
         </legend>
         <div class="field">
-{{--            @foreach($contacts as $contact)
-                <label for="contact_name">{!! $contact->name !!}</label>
-                <input type="checkbox" id="contact_name" name="$contacts[]">
-            @endforeach--}}
-            <div class="single_contact">
-                <label for="contact_name">Anika</label>
-                <input type="checkbox" id="contact_name" name="contacts[1]">
-                <select name="contacts[1][role]">
-                    @foreach(\App\Enums\ContactRoles::cases() as $role)
-                        <option value="{{$role->value}}">{{$role->value}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="single_contact">
-                <label for="contact_name">Lucas</label>
-                <input type="checkbox" id="contact_name" name="contacts[2]">
-                <select name="contacts[2][role]">
-                    @foreach(\App\Enums\ContactRoles::cases() as $role)
-                        <option value="{{$role->value}}">{{$role->value}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="single_contact">
-                <label for="contact_name">Elisa</label>
-                <input type="checkbox" id="contact_name" name="contacts[3]">
-                <select name="contacts[3][role]">
-                    @foreach(\App\Enums\ContactRoles::cases() as $role)
-                        <option value="{{$role->value}}">{{$role->value}}</option>
-                    @endforeach
-                </select>
-            </div>
+
+            @foreach($contacts as $contact)
+                <div class="single_contact">
+                    <label for="contacts{!! $contact->id !!}">{!! $contact->name !!}</label>
+                    <input type="checkbox" name="contacts[{!! $contact->id !!}]"
+                           id="contact{!! $contact->id !!}"
+                           value="{!! $contact->id !!}"
+                           onchange="toggleRole(this)">
+                    <select name="contacts[{!! $contact->id !!}][role]" id="role{!! $contact->id !!}" disabled>
+                        @foreach(\App\Enums\ContactRoles::cases() as $role)
+                            <option value="{{$role->value}}">{{$role->value}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endforeach
 
         </div>
     </fieldset>
@@ -147,9 +130,13 @@
     {{__('labels-buttons.legend_projects')}}
 </legend>
     <div class="field">
-{{--        @foreach($projects as $project)
-        @endforeach--}}
-        <div class="single_project">
+        @foreach($projects as $project)
+            <div class="single_project">
+                <label for="projects[{!! $project->id !!}]">{!! $project->name !!}</label>
+                <input type="checkbox" id="projects{!! $project->id !!}" name="projects[{!! $project->id !!}]" value="{!! $project->id !!}">
+            </div>
+        @endforeach
+        {{--<div class="single_project">
             <label for="project_name">CV</label>
             <input type="checkbox" id="project_name" name="projects[1]" value="1">
         </div>
@@ -160,12 +147,58 @@
         <div class="single_project">
             <label for="project_name">Client</label>
             <input type="checkbox" id="project_name" name="projects[3]" value="3">
-        </div>
+        </div>--}}
     </div>
 </fieldset>
     <button type="submit">
         {{__('labels-buttons.create_a_jiri')}}
     </button>
 </form>
+
+<script>
+    // wird aufgerufen wenn onchange="toggleRole(this)" aufgerufen wird Immer wenn Kästchen anklickst oder abklickst
+    function toggleRole(checkbox) {
+        const contactId = checkbox.id.replace('contact', '');       // hier holt man id nummer von kontakt
+        const roleSelect = document.getElementById('role' + contactId);  // select hat ID role4 bei Kontakt 4, //verbindet die Zahl mit "role" → role4.
+
+        // aktivieren oder deaktivieren select, aktivieren select nur wenn checked
+        roleSelect.disabled = !checkbox.checked;
+    }
+</script>
 </body>
+
 </html>
+
+{{--            @foreach($contacts as $contact)
+    <label for="contact_name">{!! $contact->name !!}</label>
+    <input type="checkbox" id="contact_name" name="$contacts[]">
+@endforeach--}}
+{{--
+
+            <div class="single_contact">
+                <label for="contact_name">{!! $contact->name !!}</label>
+                <input type="checkbox" id="contact_name" name="contacts[1]">
+                <select name="contacts[1][role]">
+                    @foreach(\App\Enums\ContactRoles::cases() as $role)
+                        <option value="{{$role->value}}">{{$role->value}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="single_contact">
+                <label for="contact_name">{!! $contact->name !!}</label>
+                <input type="checkbox" id="contact_name" name="contacts[2]">
+                <select name="contacts[2][role]">
+                    @foreach(\App\Enums\ContactRoles::cases() as $role)
+                        <option value="{{$role->value}}">{{$role->value}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="single_contact">
+                <label for="contact_name">{!! $contact->name !!}</label>
+                <input type="checkbox" id="contact_name" name="contacts[3]">
+                <select name="contacts[3][role]">
+                    @foreach(\App\Enums\ContactRoles::cases() as $role)
+                        <option value="{{$role->value}}">{{$role->value}}</option>
+                    @endforeach
+                </select>
+            </div>--}}

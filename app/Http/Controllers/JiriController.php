@@ -20,7 +20,7 @@ class JiriController extends Controller
     public function store(StoreJiriRequest $request, Jiri $jiri)
     {
         // $this->authorize('store', $jiri);
-        $validated = $validated = $request->validated();
+        $validated = $request->validated();
 
         $jiri = auth()->user()->jiris()->create($validated);
 
@@ -49,11 +49,10 @@ class JiriController extends Controller
         // to_route('jiris.index');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         /*        $jiris = Jiri::all();
                 $users = User::all();*/
-
         /*foreach ($users as $user) {
             if ($user != auth()->user()) {
                 abort(403);
@@ -61,12 +60,26 @@ class JiriController extends Controller
         }*/
         $user = Auth::user();
 
-        $jiris = $user->jiris;
+        //$jiris = $user->jiris;
+        /*$jiris = $user->jiris()->with(['attendances', 'projects', 'user'])
+            ->get();*/
+        $sort = $request->get('sort', 'name'); // default sort column
+        $order = $request->get('order', 'asc'); // default order
+
+        $validSorts = ['name', 'date'];
+        if (!in_array($sort, $validSorts)) {
+            $sort = 'name';
+        }
+
+        $jiris = $user->jiris()
+            ->orderBy($sort, $order)
+            ->with(['projects', 'evaluated', 'evaluators'])
+            ->get();
 
         return View('jiris.index', compact('jiris', 'user'));
     }
 
-    public function show(Jiri $jiri)
+    public function show(Jiri $jiri, Request $request)
     {
         $user = Auth::user();
 
@@ -74,15 +87,31 @@ class JiriController extends Controller
             abort(403);
         }
 
-        return View('jiris.show', compact('jiri', 'user'));
+
+
+        $sort = $request->get('sort', 'name'); // default sort column
+        $order = $request->get('order', 'asc'); // default order
+
+        $validSorts = ['name', 'email'];
+        if (!in_array($sort, $validSorts)) {
+            $sort = 'name';
+        }
+
+        $contacts = $user->contacts()
+            ->orderBy($sort, $order)
+            ->get();
+
+
+        return View('jiris.show', compact('jiri', 'user', 'contacts'));
     }
 
     public function create()
     {
         $user = Auth::user();
-        $contacts = $user->contacts();
-        $projects = $user->projects();
+        $contacts = $user->contacts;
+        $projects = $user->projects;
 
+        //dd($contacts);
         // $contacts = Contact::all();
         // $projects = Project::all();
 
@@ -94,8 +123,8 @@ class JiriController extends Controller
     {
         // juste ce quil y a pour le user connecté
         $user = Auth::user();
-        $contacts = $user->contacts();
-        $projects = $user->projects();
+        $contacts = $user->contacts;
+        $projects = $user->projects;
 
         /*ça c'est tous les utilisateurs
          * $contacts = Contact::all();
@@ -137,6 +166,6 @@ class JiriController extends Controller
             'id',
             ['name', 'description', 'date']);
 
-        return view('jiris.show', compact('jiri'));
+        return redirect(route('jiris.show', $jiri));
     }
 }

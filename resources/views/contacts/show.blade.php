@@ -20,16 +20,33 @@
         <ul>
             <li class="pt-4 pl-4 ">
                 <p class="text-xl font-bold ">{{__('contact.name')}}</p>
-                   <p>{!!$contact->name;!!}</p>
+                   <p>{!!$contact->name!!}</p>
             </li>
             <li  class="pt-4 pl-4">
                 <p  class="text-xl font-bold ">{{__('contact.email')}}</p>
-                    <p>{!!$contact->email;!!}</p>
+                    <p>{!!$contact->email!!}</p>
             </li>
-            <li  class="pt-4 pl-4">
+            @if(isset($contact['avatar']))
+                <li class="pt-4 pl-4" >
+                    <p  class="text-xl font-bold ">{{__('contact.avatar')}}</p>
+                        <img
+                            src="{{ asset('/images/contacts/variants/300x300/'.$contact->avatar) }}"
+                            alt="Avatar de {!! $contact->name !!}" class="max-w-xs">
+                </li>
+            @endif
+
+
+
+
+
+
+
+
+
+            {{--<li  class="pt-4 pl-4">
                 <p  class="text-xl font-bold ">{{__('contact.avatar')}}</p>
                 <img src="{!! asset('storage/app/public/images/contacts/originals'.$contact->avatar) !!}" alt="L’avatar de {!! $contact->name !!}">
-            </li>
+            </li>--}}
         </ul>
         <a href="/contacts/{{ $contact->id }}/edit" class="block pt-20 pl-4 text-blue-600" title="aller vers la page ">
             Modifier le contact

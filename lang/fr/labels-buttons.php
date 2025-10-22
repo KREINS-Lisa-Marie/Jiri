@@ -14,4 +14,7 @@ return [
     'modify_a_contact' => 'Modifier un Contact',
     'legend_create_a_contact' => 'Le contact',
     'create_a_contact' => 'Créez un Contact',
+    'create_a_project' => 'Créez un Projet',
+    'evaluators'=>"Evaluateur",
+    'evaluated'=>"Evaluée",
 ];

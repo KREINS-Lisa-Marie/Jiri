@@ -13,7 +13,7 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name,
+            'name' => fake()->company(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
