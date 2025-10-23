@@ -66,9 +66,12 @@
     <form action="{!! route('jiris.store') !!}" method="post" class="bg-blue-50 rounded-2xl shadow-2xl p-10 min-w-2xl">
         @csrf
         <fieldset class="jiri_section pb-10">
-            <legend class="text-3xl font-medium pl-2 pb-3">
+      @component('components.form.legend')
                 {{__('labels-buttons.legend_jiri')}}
-            </legend>
+            @endcomponent
+            {{--      <legend class="text-3xl font-medium pl-2 pb-3">
+                {{__('labels-buttons.legend_jiri')}}
+            </legend>--}}
             <div class="field">
                 <div class="text_field pb-5 flex flex-col">
                     <label for="name" class="font-bold pb-2">{{__('labels-buttons.name')}}</label>
@@ -79,7 +82,7 @@
                     </p>
                     @enderror
                 </div>
-                <div class="text_field pb-5 flex flex-col">
+            {{--    <div class="text_field pb-5 flex flex-col">
                     <label for="date" class="font-bold pb-2">{{__('labels-buttons.date')}}</label>
                     <input type="date" name="date" id="date" placeholder="10/05/2025" value="{!! old('date') !!}" class="bg-white rounded-xl p-2">
                     @error('date')
@@ -87,20 +90,29 @@
                         {{$message}}
                     </p>
                     @enderror
-                </div>
-                <div class="textarea_field pb-5 flex flex-col">
+                </div>--}}
+                @component('components.fields.date', ['old_date' =>  old('date')])
+                    {{__('labels-buttons.date')}}
+                @endcomponent
+             {{--   <div class="textarea_field pb-5 flex flex-col">
                     <label for="description" class="font-bold pb-2" >
                         {{__('labels-buttons.description')}}
                     </label>
                     <textarea id="description" name="description"
                               placeholder="Le Jury ... évalue..." class="bg-white rounded-xl p-2">{!! old('description') !!}</textarea>
-                </div>
+                </div>--}}
+                @component('components.fields.textarea', ['old_values' =>  old('description')])
+                    {{__('labels-buttons.description')}}
+                @endcomponent
             </div>
         </fieldset>
         <fieldset class="contact_section pb-10">
-            <legend class="text-3xl font-medium pl-2 pb-3">
+       {{--     <legend class="text-3xl font-medium pl-2 pb-3">
                 {{__('labels-buttons.legend_contacts')}}
-            </legend>
+            </legend>--}}
+            @component('components.form.legend')
+                {{__('labels-buttons.legend_contacts')}}
+            @endcomponent
             <div class="field">
 
                 @foreach($contacts as $contact)
@@ -122,9 +134,12 @@
             </div>
         </fieldset>
         <fieldset class="project_section pb-10">
-            <legend class="text-3xl font-medium pl-2 pb-3">
+   {{--         <legend class="text-3xl font-medium pl-2 pb-3">
                 {{__('labels-buttons.legend_projects')}}
-            </legend>
+            </legend>--}}
+            @component('components.form.legend')
+                {{__('labels-buttons.legend_projects')}}
+            @endcomponent
             <div class="field">
                 @foreach($projects as $project)
                     <div class="single_project pb-4 flex flex-row-reverse justify-end">
@@ -147,9 +162,12 @@
                 </div>--}}
             </div>
         </fieldset>
-        <button type="submit" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl">
+   {{--     <button type="submit" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl">
             {{__('labels-buttons.create_a_jiri')}}
-        </button>
+        </button>--}}
+        @component('components.button')
+            {{__('labels-buttons.create_a_jiri')}}
+        @endcomponent
     </form>
 </main>
 

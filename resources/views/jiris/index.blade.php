@@ -33,7 +33,7 @@
         <table class="rounded-2xl max-w-200 shadow-2xl">
             <thead class=" bg-cyan-700 text-white">
             <tr class="">
-                <th scope="col" class=" p-4">
+                <th scope="col" class=" p-4 rounded-tl-2xl ">
                     <div>
                         Nom
                         <a href="{{ route('jiris.index', ['sort' => 'name', 'order' => $currentSort === 'name' && $currentOrder === 'asc' ? 'desc' : 'asc']) }}">
@@ -74,7 +74,7 @@
                 <th class="p-4">
                     Évalués
                 </th>
-                <th class=" p-4">
+                <th class=" p-4 rounded-tr-2xl">
                     Évaluateurs
                 </th>
             </tr>
@@ -107,6 +107,7 @@
             </tbody>
         </table>
     </section>
+        {{ $jiris->links() }}
 @else
     <h1><em>Il n’y a pas de Jiris </em></h1>
 @endif

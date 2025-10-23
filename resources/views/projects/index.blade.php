@@ -6,7 +6,7 @@
         <table class=" px-4 mt-4 shadow-xl rounded-2xl">
             <thead class="bg-cyan-700 text-white">
             <tr class="">
-                <th scope="col" class="text-lg px-0  p-2">
+                <th scope="col" class="text-lg px-0  p-2 rounded-t-2xl">
                     Nom du projet
                 </th>
             </tr>
@@ -28,7 +28,12 @@
         <h1><em>Il n’y a pas de projets </em></h1>
     @endif
     <br>
+        {{ $projects->links() }}
 </section>
+
+
+
+
 <div class="endsection block text-center mt-10">
     <a href="{!! route('projects.create')!!}" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl">
         Créer un nouveau Projet

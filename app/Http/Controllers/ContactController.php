@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ContactController extends Controller
 {
@@ -18,8 +19,14 @@ class ContactController extends Controller
 
     public function index()
     {
-        $contacts = Auth::user()->contacts;
+        //$contacts = Auth::user()->contacts;
         // dd($contacts);
+        //$contacts->paginate($perPage = 3, $columns = ['*'], $pageName = 'contacts');
+
+        $contacts = Auth::user()->contacts()
+            ->paginate($perPage = 3, $columns = ['*'], $pageName = 'contacts'
+        );
+
 
         return view('contacts.index', compact('contacts'));
     }
@@ -91,7 +98,13 @@ class ContactController extends Controller
         // validation
         $validated_data = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:contacts',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('contacts')->ignore($contact->id)
+                // email aus tabelle contacts ausser bei diesem kontakt mit contact-id
+                //Gibt es schon jemanden mit der E-Mail ... aber nicht den mit der id $contact->id?
+            ],
             'avatar' => 'nullable|image',
         ]);
 
@@ -99,14 +112,15 @@ class ContactController extends Controller
         $contact->upsert(
             [
                 [
+                    'id' => $contact->id,
                     'name' => $validated_data['name'],
                     'email' => $validated_data['email'],
                     'avatar' => $validated_data['avatar'],
                     'user_id' => Auth::user()->id,
                 ],
             ],
-            'email',
-            ['name', 'email', 'avatar']);
+            'id',
+            ['name', 'email', 'avatar', 'user_id', 'updated_at']);
 
         return redirect(route('contacts.show', $contact));
     }

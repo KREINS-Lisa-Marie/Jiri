@@ -5,16 +5,16 @@
     <h1 class="font-bold text-4xl pb-20">Liste des contactes</h1>
 
 
-   <table class="px-4 mt-4 shadow-xl rounded-2xl ">
-       <thead class="bg-cyan-700 text-white">
+   <table class="px-4 mt-4 shadow-xl rounded-2xl mb-10">
+       <thead class="bg-cyan-700 text-white ">
        <tr>
-           <th scope="col" class="text-lg p-2">
+           <th scope="col" class="text-lg p-2 rounded-tl-2xl">
                Nom complet
            </th>
            <th scope="col" class="text-lg  p-2">
                Adresse email
            </th>
-           <th scope="col" class="text-lg  p-2">
+           <th scope="col" class="text-lg  p-2 rounded-tr-2xl">
                Avatar
            </th>
        </tr>
@@ -49,6 +49,9 @@
        </tbody>
        @endforeach
    </table>
+
+        {{ $contacts->links() }}
+
 @else
     <h1><em>Il n’y a pas de Contacts </em></h1>
 @endif
