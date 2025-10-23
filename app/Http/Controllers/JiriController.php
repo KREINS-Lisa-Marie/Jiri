@@ -86,10 +86,24 @@ class JiriController extends Controller
             $sort = 'name';
         }
 
+/*        $jiris = $user->jiris()
+            ->orderBy($sort, $order)
+            ->with(['projects', 'evaluated', 'evaluators'])
+            ->get();*/
+
+  /*      $jiris = $user->jiris()
+            ->orderBy($sort, $order)
+            ->with(['projects', 'evaluated', 'evaluators'])
+            ->paginate(3);*/
+
         $jiris = $user->jiris()
             ->orderBy($sort, $order)
             ->with(['projects', 'evaluated', 'evaluators'])
-            ->get();
+            ->paginate($perPage = 3, $columns = ['*'], $pageName = 'jiris'
+            );
+
+        //$jiris->paginate(3);
+
 
         return View('jiris.index', compact('jiris', 'user'));
     }

@@ -15,7 +15,9 @@ class ProjectController extends Controller
     public function index()
     {
 
-        $projects = Project::all();
+        //$projects = Project::all();
+        $projects = Project::paginate($perPage = 3, $columns = ['*'], $pageName = 'projects'
+        );
 
         return view('projects.index', compact('projects'));
     }
@@ -27,9 +29,10 @@ class ProjectController extends Controller
 
         $validated = $request->validated();
 
-        Auth::user()->projects()->create($validated);
+         Auth::user()->projects()->create($validated);
+        //dd($user);
 
-        return redirect()->route('projects.index');
+        return redirect(route('projects.index'));
     }
 
     public function show(Project $project)
@@ -60,11 +63,14 @@ class ProjectController extends Controller
         $project->upsert(
             [
                 [
+                    'id' => $project['id'],
                     'name' => $validated_data['name'],
+                    'user_id' => Auth::user()->id,
                 ],
             ],
             'id',
-            ['name']);
+            ['name']            //colonne a updater
+        );
 
         return redirect(route('projects.update', $project));
     }

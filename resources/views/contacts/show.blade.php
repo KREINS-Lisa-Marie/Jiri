@@ -17,17 +17,9 @@
                     <p  class="text-xl font-bold ">{{__('contact.avatar')}}</p>
                         <img
                             src="{{ asset('/images/contacts/variants/300x300/'.$contact->avatar) }}"
-                            alt="Avatar de {!! $contact->name !!}" class="max-w-xs">
+                            alt="Avatar de {!! $contact->name !!}" class="max-w-xs rounded-2xl mt-8">
                 </li>
             @endif
-
-
-
-
-
-
-
-
 
             {{--<li  class="pt-4 pl-4">
                 <p  class="text-xl font-bold ">{{__('contact.avatar')}}</p>
