@@ -48,6 +48,7 @@ it('creates successfully a Jiri from the data provided by the request',
         $user = User::factory()->create();
         actingAs($user);
 
+        Event::fake();
         // $jiri = Jiri::factory()->for($user)->create();
         $jiri = Jiri::factory()->for($user)->create();
         // $jiri = Jiri::factory()->raw();
@@ -84,8 +85,7 @@ it(
     }
 );
 
-it(
-    'fails to create a new jiri in database when the date is missing in the request',
+it('fails to create a new jiri in database when the date is missing in the request',
     function () {
         // arrange
         // $user = User::factory()->create();
@@ -148,6 +148,8 @@ it(
 
 it('displays a list of Jiris on the jiri index', function () {
     // arrange
+
+    Event::fake();
     $user = User::factory()
         ->hasJiris(3)
         ->create();
@@ -188,6 +190,7 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
     $user = User::factory()->create();
     actingAs($user);
 
+    Event::fake();
     $jiris = Jiri::factory(3)
         ->for($user)
         ->create();
@@ -222,6 +225,8 @@ it('verifies that the obligations are respected', function () {
     $user = User::factory()->create();
     actingAs($user);
 
+
+    Event::fake();
     $jiri = Jiri::factory()
         ->for($user)
         ->create();

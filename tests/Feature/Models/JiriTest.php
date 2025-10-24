@@ -25,7 +25,7 @@ it('is possible to retrieve many evaluated and many evaluators from a jiri',
                     )
 
                     ->create(['user_id' => Auth::id()]);*/
-
+        Event::fake();
         $user = User::factory()->create();
         ActingAs($user);
 
@@ -60,6 +60,7 @@ it('is possible to retrieve many projects from a jiri',
         $user = User::factory()->create();
         actingAs($user);
 
+        Event::fake();
         $jiri = Jiri::factory()->for($user)
             ->hasAttached(
                 Project::factory()->for($user)->count(10)
@@ -76,6 +77,7 @@ it('allows an evaluated contact to be linked to a homework through an implementa
         $user = User::factory()->create();
         actingAs($user);
 
+        Event::fake();
         $jiri = Jiri::factory()->create(['user_id' => Auth::user()->id]);
         $project = Project::factory()->for($user)->create();
         $evaluated = Contact::factory()->for($user)->create();

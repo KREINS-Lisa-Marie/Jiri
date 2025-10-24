@@ -17,18 +17,34 @@ class ContactController extends Controller
 {
     use AuthorizesRequests;
 
-    public function index()
+    public function index(Request $request)
     {
         //$contacts = Auth::user()->contacts;
         // dd($contacts);
         //$contacts->paginate($perPage = 3, $columns = ['*'], $pageName = 'contacts');
 
-        $contacts = Auth::user()->contacts()
+
+        $user = Auth::user();
+
+        $sort = $request->get('sort', 'name'); // default sort column
+        $order = $request->get('order', 'asc'); // default order
+
+        $validSorts = ['name', 'email'];
+        if (!in_array($sort, $validSorts)) {
+            $sort = 'name';
+        }
+
+        $contacts = $user->contacts()
+            ->orderBy($sort, $order)
             ->paginate($perPage = 3, $columns = ['*'], $pageName = 'contacts'
-        );
+            );
+
+    /*    $contacts = Auth::user()->contacts()
+            ->paginate($perPage = 3, $columns = ['*'], $pageName = 'contacts'
+        );*/
 
 
-        return view('contacts.index', compact('contacts'));
+        return view('contacts.index', compact('contacts', 'sort', 'order'));
     }
 
     public function store(StoreContactRequest $request): RedirectResponse
@@ -43,7 +59,8 @@ class ContactController extends Controller
         // dd($validated);
         $validated = $request->validated();
 
-        if ($validated['avatar']) {
+        //if ($validated['avatar']) {
+        if ( $request->hasFile('avatar')) {
             $new_original_file_name = uniqid().'.'.config('contactavatar.jpg_image_type');
 
             $full_path_to_original = Storage::putFileAs(
@@ -115,7 +132,7 @@ class ContactController extends Controller
                     'id' => $contact->id,
                     'name' => $validated_data['name'],
                     'email' => $validated_data['email'],
-                    'avatar' => $validated_data['avatar'],
+                    'avatar' => $validated_data['avatar']?? null,
                     'user_id' => Auth::user()->id,
                 ],
             ],

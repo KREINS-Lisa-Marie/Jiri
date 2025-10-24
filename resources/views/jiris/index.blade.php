@@ -1,9 +1,3 @@
-@php
-    $currentSort = request('sort');
-    $currentOrder = request('order', 'asc');
-@endphp
-
-
 @component('layouts.app')
 <body>
 <section class="project_section px-6 py-6 flex items-center flex-col">
@@ -24,8 +18,14 @@
 
      --}}
 
-        <a href="{{ route('jiris.create') }}" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl"
-           title="aller vers le site 'Créer un jiri'">Créer un Jiri</a>
+        <div class="flex justify-between">
+            <a href="{{ route('jiris.create') }}"
+                 class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl"
+                 title="aller vers le site 'Créer un jiri'">Créer un Jiri</a>
+            <a href="" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl">
+                Filtrer
+            </a>
+        </div>
     </div>
     <br>
     <br>
@@ -35,10 +35,12 @@
             <tr class="">
                 <th scope="col" class=" p-4 rounded-tl-2xl ">
                     <div>
-                        Nom
-                        <a href="{{ route('jiris.index', ['sort' => 'name', 'order' => $currentSort === 'name' && $currentOrder === 'asc' ? 'desc' : 'asc']) }}">
-                            @if ($currentSort === 'name')
-                                {{ $currentOrder === 'asc' ? '▲' : '▼' }}
+
+                        <a href="{{ route('jiris.index', ['sort' => 'name', 'order' => $sort === 'name' && $order === 'asc' ? 'desc' : 'asc']) }}">
+                            Nom
+
+                            @if ($sort === 'name')
+                                {{ $order === 'asc' ? '▲' : '▼' }}
                             @else
                                 ▲
                             @endif
@@ -50,16 +52,13 @@
                 </th>
                 <th scope="col" class=" p-4">
                     <div>
-                        Date
-                        <a href="{{ route('jiris.index', ['sort' => 'date', 'order' => request('order') === 'asc' && request('sort') === 'date' ? 'desc' : 'asc']) }}">
-                            @if ($currentSort === 'date')
-                                {{ $currentOrder === 'asc' ? '▲' : '▼' }}
+                        <a href="{{ route('jiris.index', ['sort' => 'name', 'order' => $sort === 'name' && $order === 'asc' ? 'desc' : 'asc']) }}">
+                            Date
+                            @if ($sort === 'name')
+                                {{ $order === 'asc' ? '▲' : '▼' }}
                             @else
                                 ▲
                             @endif
-                            {{--                                <svg height="12" width="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="black">
-                                                            <polygon points="0,0 16,0 8,12" />
-                                                        </svg>--}}
                         </a>
                     </div>
                 </th>
@@ -81,8 +80,8 @@
             </thead>
             <tbody>
             @foreach($jiris as $jiri)
-                <tr class="border-t-1">
-                    <td class=" p-2">
+                <tr class="border-t-1 ">
+                    <td class=" p-2 ">
                         <a href="{!! route('jiris.show', $jiri->id) !!}" class="underline text-cyan-700 font-bold">
                             {!! $jiri->name !!}
                         </a>
@@ -107,10 +106,11 @@
             </tbody>
         </table>
     </section>
-        {{ $jiris->links() }}
+
 @else
     <h1><em>Il n’y a pas de Jiris </em></h1>
 @endif
 </section>
+{{ $jiris->links() }}
 </body>
 @endcomponent

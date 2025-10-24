@@ -42,6 +42,7 @@ it('verifies that a user who is not connected can not access to the jiris page',
 
 it('verifies if that a guest cannot access the jiri page', function () {
 
+    Event::fake();
     $user = User::factory()->has(Jiri::factory()->count(3))->create();
 
     $response = $this->get(route('jiris.index'));
@@ -52,6 +53,8 @@ it('verifies if that a guest cannot access the jiri page', function () {
 
 it('verifies that the user connected to the dashboard is the same person than the dashboard shown', function () {
     // arrange
+    Event::fake();
+
     $user = User::factory()
         ->has(\App\Models\Jiri::factory()
             ->count(3))
@@ -68,6 +71,8 @@ it('verifies that the user connected to the dashboard is the same person than th
 });
 
 it('verifies that a user cannot modify a jiri from another user', function () {
+
+    Event::fake();
 
     $user = User::factory()->create();
     $user2 = User::factory()->create();

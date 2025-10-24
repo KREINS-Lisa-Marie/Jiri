@@ -13,6 +13,8 @@ it('is possible to retrieve many jiris from a project',
         $user = User::factory()->create();
         actingAs($user);
 
+        Event::fake();
+
         Jiri::factory()->create([
             'user_id' => $user->id,
         ]);

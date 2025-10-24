@@ -57,5 +57,8 @@ class FortifyServiceProvider extends ServiceProvider
         RedirectIfAuthenticated::redirectUsing(function () {
             return route('jiris.index');
         });
+
+
+
     }
 }

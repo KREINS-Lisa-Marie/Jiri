@@ -9,7 +9,9 @@
             <a href="{{route('projects.index')}}" class="py-6">Mes Projects</a>
             <a href="{{route('contacts.index')}}" class="py-6">Mes contacts</a></div>
         <div class="min-w-full  border-t-2 py-6">
-
+            <a href="{{route('users.index')}}" class="mb-10 block border-b-2 pb-12 pt-6">
+                Paramètres
+            </a>
             <form action="{{route('logout')}}" method="POST">
                 @csrf
                 <button type="submit">Déconnexion</button>

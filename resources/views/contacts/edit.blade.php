@@ -4,7 +4,7 @@
 @if ($contact)
     <h1 class="font-bold text-4xl pb-20">Modifier le Contact : {{$contact->name}}</h1>
 
-    <form action='{{route('contacts.update', $contact->id)}}' method="post" class="bg-blue-50 rounded-2xl shadow-2xl p-10 min-w-2xl">
+    <form action='{{route('contacts.update', $contact->id)}}' method="post" class="bg-blue-50 rounded-2xl shadow-2xl p-10 min-w-2xl" enctype="multipart/form-data" >
         @method('PATCH')
         @csrf
         <fieldset class="contact_section">

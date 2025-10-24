@@ -15,4 +15,9 @@ trait PasswordValidationRules
     {
         return ['required', 'string', Password::default(), 'confirmed'];
     }
+
+    protected function updatePasswordRules(): array
+    {
+        return ['nullable', 'string', Password::default(), 'confirmed'];
+    }
 }

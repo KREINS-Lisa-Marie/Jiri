@@ -6,15 +6,23 @@
         <table class=" px-4 mt-4 shadow-xl rounded-2xl">
             <thead class="bg-cyan-700 text-white">
             <tr class="">
-                <th scope="col" class="text-lg px-0  p-2 rounded-t-2xl">
-                    Nom du projet
+                <th scope="col" class="text-lg p-4 rounded-t-2xl">
+                    <a href="{{ route('projects.index', ['sort' => 'name', 'order' => $sort === 'name' && $order === 'asc' ? 'desc' : 'asc']) }}">
+                        Nom du projet
+                        @if ($sort === 'name')
+                            {{ $order === 'asc' ? '▲' : '▼' }}
+                        @else
+                            ▲
+                        @endif
+
+                    </a>
                 </th>
             </tr>
             </thead>
             <tbody>
             @foreach($projects as $project)
                 <tr class="text-center border-t-1" >
-                    <td class="p-2">
+                    <td class="p-4" >
                         <a href="{!! route('projects.show', $project->id) !!}" class="underline text-blue-600">
                             {!! $project->name !!}
                         </a>
@@ -24,7 +32,6 @@
             </tbody>
         </table>
     @else
-        <h1><em>Il n’y a pas de projets </em></h1>
         <h1><em>Il n’y a pas de projets </em></h1>
     @endif
     <br>

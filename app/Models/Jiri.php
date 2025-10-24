@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use App\Enums\ContactRoles;
+use App\Observers\JiriObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+//ObservedBy::Jiri
+#[ObservedBy([JiriObserver::class])]
 class Jiri extends Model
 {
     use HasFactory;

@@ -12,7 +12,6 @@ class JiriObserver
      */
     public function created(Jiri $jiri): void
     {
-        //
         event(new JiriCreatedEvent($jiri));
     }
 
