@@ -124,6 +124,7 @@ it('displays a list of Jiris on the jiri index', function () {
     $user = User::factory()->create();
     actingAs($user);
 
+    Event::fake();
     $jiris = Jiri::factory(3)->create(['user_id' => $user->id]);
 
     // act
@@ -132,7 +133,7 @@ it('displays a list of Jiris on the jiri index', function () {
 
     // assert
     $response->assertStatus(200);
-    $response->assertSee('liste des Jiris', false);
+    $response->assertSee('Liste des Jiris', false);
 
     /*    \Pest\Laravel\assertDatabaseHas('projects',
         ['name'=>'Projet Client',
@@ -160,6 +161,7 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
     $user = User::factory()->create();
     actingAs($user);
 
+    Event::fake();
     $jiris = Jiri::factory(3)->create(['user_id' => $user->id]);
 
     // act
@@ -177,6 +179,7 @@ it('verifies that by clicking on a Jirilink, a user is redirected to the page of
     $user = User::factory()->create();
     actingAs($user);
 
+    Event::fake();
     $jiri = Jiri::factory()->for($user)->create();
 
     // act
@@ -230,6 +233,7 @@ it('verifies that the obligations are respected', function () {
     $user = User::factory()->create();
     actingAs($user);
 
+    Event::fake();
     $jiris = Jiri::factory()->create(['user_id' => $user->id,
     ]);
 

@@ -13,7 +13,7 @@ it('it is possible to associate many Jiris to a Contact',
         // arrange
         $user = User::factory()->create();
         actingAs($user);
-
+        Event::fake();
         $contact = Contact::factory()->for($user)
             ->hasAttached(
                 Jiri::factory()->for($user)->count(3)->state(['user_id' => $user->id]),

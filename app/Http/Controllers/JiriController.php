@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 
-#[ObservedBy([JiriObserver::class])]
+//#[ObservedBy([JiriObserver::class])]
 
 class JiriController extends Controller
 {
@@ -30,6 +30,8 @@ class JiriController extends Controller
         $validated = $request->validated();
 
         $jiri = auth()->user()->jiris()->create($validated);
+
+        //$jiri = request()->user()->jiris()->create();
 
         //  kann auch private f° damit machen
         if (! empty($validated['projects'])) {
@@ -105,7 +107,7 @@ class JiriController extends Controller
         //$jiris->paginate(3);
 
 
-        return View('jiris.index', compact('jiris', 'user'));
+        return View('jiris.index', compact('jiris', 'user', 'order', 'sort'));
     }
 
     public function show(Jiri $jiri, Request $request)

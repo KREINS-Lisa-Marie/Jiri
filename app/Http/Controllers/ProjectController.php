@@ -12,14 +12,29 @@ class ProjectController extends Controller
 {
     use AuthorizesRequests;
 
-    public function index()
+    public function index(Request $request)
     {
 
-        //$projects = Project::all();
-        $projects = Project::paginate($perPage = 3, $columns = ['*'], $pageName = 'projects'
-        );
+        $user = Auth::user();
 
-        return view('projects.index', compact('projects'));
+        $sort = $request->get('sort', 'name'); // default sort column
+        $order = $request->get('order', 'asc'); // default order
+
+        $validSorts = ['name'];
+        if (!in_array($sort, $validSorts)) {
+            $sort = 'name';
+        }
+
+        $projects = $user->contacts()
+            ->orderBy($sort, $order)
+            ->paginate($perPage = 3, $columns = ['*'], $pageName = 'projects'
+            );
+
+        //$projects = Project::all();
+        /*$projects = Project::paginate($perPage = 3, $columns = ['*'], $pageName = 'projects'
+        );*/
+
+        return view('projects.index', compact('projects', 'sort', 'order'));
     }
 
     public function store(StoreProjectRequest $request, Project $project)

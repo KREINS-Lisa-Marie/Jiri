@@ -4,15 +4,30 @@
 @if ($contacts->isNotEmpty())
     <h1 class="font-bold text-4xl pb-20">Liste des contactes</h1>
 
-
    <table class="px-4 mt-4 shadow-xl rounded-2xl mb-10">
        <thead class="bg-cyan-700 text-white ">
        <tr>
            <th scope="col" class="text-lg p-2 rounded-tl-2xl">
-               Nom complet
+               <a href="{{ route('contacts.index', ['sort' => 'name', 'order' => $sort === 'name' && $order === 'asc' ? 'desc' : 'asc']) }}">
+                   Nom complet
+                   @if ($sort === 'name')
+                       {{ $order === 'asc' ? '▲' : '▼' }}
+                   @else
+                       ▲
+                   @endif
+
+               </a>
            </th>
            <th scope="col" class="text-lg  p-2">
-               Adresse email
+               <a href="{{ route('contacts.index', ['sort' => 'name', 'order' => $sort === 'name' && $order === 'asc' ? 'desc' : 'asc']) }}">
+                   Adresse email
+                   @if ($sort === 'name')
+                       {{ $order === 'asc' ? '▲' : '▼' }}
+                   @else
+                       ▲
+                   @endif
+
+               </a>
            </th>
            <th scope="col" class="text-lg  p-2 rounded-tr-2xl">
                Avatar
@@ -38,7 +53,7 @@
                @if($contact->avatar)
                    <img
                        src="{{ asset('/images/contacts/variants/100x100/'.$contact->avatar) }}"
-                       alt="Avatar de {!! $contact->name !!}" class="max-w-xs">
+                       alt="Avatar de {!! $contact->name !!}" class="max-w-xs rounded-2xl">
                @else
                    Aucune image choisie
                @endif

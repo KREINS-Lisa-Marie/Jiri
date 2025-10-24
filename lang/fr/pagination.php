@@ -15,5 +15,9 @@ return [
 
     'previous' => '&laquo; Retour',
     'next' => 'Avancer &raquo;',
+    'showing' =>'Affichage de',
+    'to'=>'à',
+    'of'=>'de',
+    'results'=>'résultats',
 
 ];

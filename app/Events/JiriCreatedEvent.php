@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Mail\JiriCreatedMail;
 use App\Models\Jiri;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;

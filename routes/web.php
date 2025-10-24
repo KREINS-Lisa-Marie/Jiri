@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\JiriController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // echo storage_path();
@@ -116,6 +117,9 @@ Route::post('projects/store', [ProjectController::class, 'store'])->name('projec
 
 
 Route::resource('projects', ProjectController::class);
+
+Route::resource('users', UserController::class);
+
 
 /*
 Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');

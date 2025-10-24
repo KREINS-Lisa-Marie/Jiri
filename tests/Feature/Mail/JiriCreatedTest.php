@@ -9,7 +9,7 @@ use \Illuminate\Support\Facades\{Event, Mail};
 
 it("fires an event asking to queue an email to send to the author after the creation of a Jiri", function (){
 
-     \Illuminate\Support\Facades\Event::fake();          //désactive les écouteurs d'evenements
+     Event::fakeExcept('eloquent.created: App\Models\Jiri');          //désactive les écouteurs d'evenements
 
     // \Illuminate\Support\Facades\Mail::fake();
     $user = User::factory()->create();
@@ -34,7 +34,9 @@ it("fires an event asking to queue an email to send to the author after the crea
 
 
 it('fills correctly the email with the values of the created Jiri', function () {
+    \Illuminate\Support\Facades\Mail::fake();
 
+    Event::fake(['eloquent.created: App\Models\jiri']);
 
     $jiri = Jiri::factory()->for(User::factory())->create();
 
@@ -46,11 +48,20 @@ it('fills correctly the email with the values of the created Jiri', function () 
 
 it('sends the email using the configured transport layer', function () {
 
+    Event::fake(['eloquent.created: App\Models\jiri']);
+    \Illuminate\Support\Facades\Mail::fake();
+
     $user = User::factory()->create();
     //$this->actingAs($user);
     $jiri = Jiri::factory()->for($user)->create();
 
-    Mail::to($user->email)->send(new \App\Mail\JiriCreatedMail($jiri));
+    try {
+        Mail::to($user)->send(new \App\Mail\JiriCreatedMail($jiri));
+    }catch (Exception $e){
+        test()->fail($e->getMessage());
+    }
+
+    //Mail::to($user->email)->send(new \App\Mail\JiriCreatedMail($jiri));
 
     $response = file_get_contents('http://localhost:8025/api/v1/messages');
     $messages = json_decode($response, true);
