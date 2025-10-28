@@ -1506,8 +1506,8 @@
             </div>
         <div class="py-4 flex flex-row justify-between">
             <div>
-                <input type="checkbox" name="checkbox" id="checkbox" class="pr-4"></div>
-                <label for="checkbox" class="px-2">
+                <input type="checkbox" name="remember" id="remember_me" class="pr-4"></div>
+                <label for="remember_me" class="px-2">
                     {{__('login.remember_me')}}
                 </label>
             <a href="/forgot-password" class="px-2 text-blue-600">
