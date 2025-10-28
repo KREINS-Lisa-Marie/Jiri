@@ -2,14 +2,15 @@
 <body>
 <main class="px-6 py-6 flex items-center flex-col ">
 @if ($contact)
-    <h1 class="font-bold text-4xl pb-20">Modifier le Contact : {{$contact->name}}</h1>
+    <h1 class="font-bold text-4xl pb-20">{{__('contact.modify_contact')}}{{$contact->name}}</h1>
 
     <form action='{{route('contacts.update', $contact->id)}}' method="post" class="bg-blue-50 rounded-2xl shadow-2xl p-10 min-w-2xl" enctype="multipart/form-data" >
         @method('PATCH')
         @csrf
         <fieldset class="contact_section">
             <div class="field">
-                <div class="text_field pb-5 flex flex-col">
+                @component('components.fields.text', ['name' => 'name', 'id'=>'name', 'value' =>$contact->name ])
+              {{--  <div class="text_field pb-5 flex flex-col">
                     <label for="name" class="font-bold pb-2">{{__('labels-buttons.name')}}</label>
                     <input type="text" id="name" name="name" value="{{$contact->name}}" class="bg-white rounded-xl p-2">
                     @error('name')
@@ -17,8 +18,13 @@
                         {{$message}}
                     </p>
                     @enderror
-                </div>
-                <div class="text_field pb-5 flex flex-col">
+                </div>--}}
+                    {{__('labels-buttons.name')}}
+                @endcomponent
+                @component('components.fields.email', ['value' => $contact->email])
+                        {{__('labels-buttons.email')}}
+                    @endcomponent
+              {{--  <div class="text_field pb-5 flex flex-col">
                     <label for="email" class="font-bold pb-2">{{__('labels-buttons.email')}}</label>
                     <input type="email" id="email" name="email" value="{{$contact->email}}" class="bg-white rounded-xl p-2">
                     @error('email')
@@ -26,8 +32,12 @@
                         {{$message}}
                     </p>
                     @enderror
-                </div>
-                <div class="text_field pb-5 flex flex-col">
+                </div>--}}
+
+                    @component('components.fields.file', ['name_id' => 'avatar'])
+                        {{__('labels-buttons.avatar')}}
+                    @endcomponent
+                {{--<div class="text_field pb-5 flex flex-col">
                     <input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
                     <label for="avatar" class="font-bold pb-2">{{__('labels-buttons.avatar')}}</label>
                     <input type="file" id="avatar" name="avatar" class="bg-white rounded-xl p-2">
@@ -36,7 +46,7 @@
                         {{$message}}
                     </p>
                     @enderror
-                </div>
+                </div>--}}
 
             </div>
         </fieldset>
@@ -50,7 +60,7 @@
     </form>
 
 @else
-    <h1><em>Il n’y a pas de Contact à modifier</em></h1>
+    <h1><em>{{__('contact.no_contact_to_modify')}}</em></h1>
 @endif
 
 </main>

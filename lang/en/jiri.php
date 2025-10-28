@@ -1,0 +1,26 @@
+`<?php
+
+return [
+    'create_a_jiri' => 'Create a Jiri',
+    'no_jiris_available'=>'There are no Jiris available',
+    'no_jiris_available_to_modify' => 'There are no Jiris available to modify',
+    'role'=>'Role',
+    'email'=>'Email',
+    'name'=>'Name',
+    'date'=>'Date',
+    'projects' => 'Projects',
+    'description'=>'Description',
+    'contacts_of_the_jiri'=>'Contacts of the Jiri',
+    'implementations'=>'Implementations',
+    'name_of_the_project'=>'Name of the project',
+    'modify_the_jiri'=>'Modify the jiri',
+    'details_of_the_jiri'=>'Details of the jiri : ',
+    'number_of_projects'=>'Number of projects',
+    'number_of_evaluators'=>'Number of evaluators',
+    'number_of_evaluated'=>'Number of evaluated',
+    'projects_concerning_the_jiri'=>'Projects concerning the jiri',
+    'jiri_list_of' => 'Jiri list of ',
+    'evaluators' => 'Evaluators',
+    'evaluated' => 'Evaluated',
+    'filter' => 'Filter',
+];

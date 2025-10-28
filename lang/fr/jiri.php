@@ -1,0 +1,26 @@
+`<?php
+
+return [
+    'create_a_jiri' => 'Créer un Jiri',
+    'no_jiris_available' => 'Il n’y a pas de Jiris',
+    'no_jiris_available_to_modify' => 'Il n’y a pas de Jiris à modifier',
+    'role' => 'Rôle',
+    'email' => 'Adresse e-mail',
+    'name' => 'Nom',
+    'date' => 'Date',
+    'projects' => 'Projets',
+    'description' => 'Description',
+    'contacts_of_the_jiri' => 'Contacts du jiri',
+    'implementations' => 'Implémentations',
+    'name_of_the_project' => 'Nom du projet',
+    'modify_the_jiri' => 'Modifier le jiri',
+    'details_of_the_jiri' => 'Détail du Jiri : ',
+    'number_of_projects' => 'Nombre de Projets',
+    'number_of_evaluators' => 'Nombre Evaluateurs',
+    'number_of_evaluated' => 'Nombre Evalués',
+    'projects_concerning_the_jiri' => 'Projets concernant le Jiri',
+    'jiri_list_of' => 'Liste des Jiris de ',
+    'evaluators' => 'Évaluateurs',
+    'evaluated' => 'Évalués',
+    'filter' => 'Filtrer',
+];

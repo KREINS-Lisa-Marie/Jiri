@@ -3,7 +3,8 @@
 <section class="project_section px-6 py-6 flex items-center flex-col">
 @if ($jiris->isNotEmpty() && $user)
     <div class="block text-center">
-        <h1 class="font-bold text-4xl pb-20">Liste des Jiris de {{$user->name}}</h1>
+        <h1 class="font-bold text-4xl pb-20">
+            {{__('jiri.jiri_list_of')}}{{$user->name}}</h1>
         {{-- <ol>
              @foreach ($user->jiris as $jiri)
 
@@ -21,9 +22,11 @@
         <div class="flex justify-between">
             <a href="{{ route('jiris.create') }}"
                  class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl"
-                 title="aller vers le site 'Créer un jiri'">Créer un Jiri</a>
+                 title="aller vers le site 'Créer un jiri'">
+            {{__('jiri.create_a_jiri')}}
+            </a>
             <a href="" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl">
-                Filtrer
+                {{__('jiri.filter')}}
             </a>
         </div>
     </div>
@@ -37,8 +40,7 @@
                     <div>
 
                         <a href="{{ route('jiris.index', ['sort' => 'name', 'order' => $sort === 'name' && $order === 'asc' ? 'desc' : 'asc']) }}">
-                            Nom
-
+                            {{__('jiri.name')}}
                             @if ($sort === 'name')
                                 {{ $order === 'asc' ? '▲' : '▼' }}
                             @else
@@ -53,7 +55,7 @@
                 <th scope="col" class=" p-4">
                     <div>
                         <a href="{{ route('jiris.index', ['sort' => 'name', 'order' => $sort === 'name' && $order === 'asc' ? 'desc' : 'asc']) }}">
-                            Date
+                            {{__('jiri.date')}}
                             @if ($sort === 'name')
                                 {{ $order === 'asc' ? '▲' : '▼' }}
                             @else
@@ -64,17 +66,17 @@
                 </th>
                 <th scope="col" class=" p-4">
                     <div>
-                        Description
+                        {{__('jiri.description')}}
                     </div>
                 </th>
                 <th class=" p-4">
-                    Projets
+                    {{__('jiri.projects')}}
                 </th>
                 <th class="p-4">
-                    Évalués
+                    {{__('jiri.evaluated')}}
                 </th>
                 <th class=" p-4 rounded-tr-2xl">
-                    Évaluateurs
+                    {{__('jiri.evaluators')}}
                 </th>
             </tr>
             </thead>
@@ -108,7 +110,9 @@
     </section>
 
 @else
-    <h1><em>Il n’y a pas de Jiris </em></h1>
+    <h1><em>
+        {{__('jiri.no_jiris_available')}}
+        </em></h1>
 @endif
 </section>
 {{ $jiris->links() }}
