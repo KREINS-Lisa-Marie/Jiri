@@ -80,6 +80,8 @@ class JiriController extends Controller
         //$jiris = $user->jiris;
         /*$jiris = $user->jiris()->with(['attendances', 'projects', 'user'])
             ->get();*/
+
+        //      trier
         $sort = $request->get('sort', 'name'); // default sort column
         $order = $request->get('order', 'asc'); // default order
 
@@ -92,7 +94,6 @@ class JiriController extends Controller
             ->orderBy($sort, $order)
             ->with(['projects', 'evaluated', 'evaluators'])
             ->get();*/
-
   /*      $jiris = $user->jiris()
             ->orderBy($sort, $order)
             ->with(['projects', 'evaluated', 'evaluators'])

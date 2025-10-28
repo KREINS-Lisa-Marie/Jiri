@@ -25,7 +25,7 @@ class ProjectController extends Controller
             $sort = 'name';
         }
 
-        $projects = $user->contacts()
+        $projects = $user->projects()
             ->orderBy($sort, $order)
             ->paginate($perPage = 3, $columns = ['*'], $pageName = 'projects'
             );

@@ -8,7 +8,7 @@
           enctype="multipart/form-data">
         @csrf
         <div class="field">
-            <div class="text_field pb-5 flex flex-col">
+    {{--        <div class="text_field pb-5 flex flex-col">
                 <label for="name" class="font-bold pb-2" >{{__('labels-buttons.name')}}</label>
                 <input type="text" id="name" name="name"
                        class="bg-white rounded-xl p-2"
@@ -18,7 +18,10 @@
                     {{$message}}
                 </p>
                 @enderror
-            </div>
+            </div>--}}
+            @component('components.fields.text', ['name' => 'name', 'id' => 'name', 'value' =>old('name') ])
+                {{__('labels-buttons.name')}}
+            @endcomponent
         </div>
         <div class="flex justify-center">
      {{--       <button type="submit"
