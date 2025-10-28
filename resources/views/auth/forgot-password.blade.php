@@ -1468,18 +1468,11 @@
         </svg>
     </div>
     <h1 class="text-2xl font-semibold text-center text-gray-800 mb-6 ">
-        {{__('login.identify_yourself')}}
+        {{__('auth.forgotten_password')}}
     </h1>
     <!-- Icône chapeau -->
 
-    @if (session('status'))
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ session('status') }}
-        </div>
-    @endif
-
-
-    <form action="{{ route('login.store') }}" method="post" class=" text-black flex flex-col">
+    <form action="/forgot-password" method="post" class=" text-black flex flex-col">
         @csrf
         <div class="flex flex-col">
             <label for="email" class="p-2 text-gray-500">
@@ -1493,40 +1486,17 @@
             <input type="email" id="email" name="email" class="border border-black rounded p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" value="{{old('email')}}">
 
         </div>
-        <div class="flex flex-col">
-        <label for="password" class="p-2 text-gray-500">
-            {{__('login.password')}}
-        </label>
-            @error('password')
-            <p class="error text-red-500">
-                {{$message}}
-            </p>
-            @enderror
-        <input type="password" id="password" name="password" class="border border-black rounded p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" value="{{old('password')}}">
-            </div>
-        <div class="py-4 flex flex-row justify-between">
-            <div>
-                <input type="checkbox" name="checkbox" id="checkbox" class="pr-4"></div>
-                <label for="checkbox" class="px-2">
-                    {{__('login.remember_me')}}
-                </label>
-            <a href="/forgot-password" class="px-2 text-blue-600">
-                {{__('login.password_forgotten')}}
-            </a>
-        </div>
 
         <button type="submit" class="bg-indigo-500 my-4 p-4 rounded font-medium text-white w-full  hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-            {{__('login.button_login')}}
+            {{__('auth.forgotten_password')}}
         </button>
     </form>
 
-    <p>
-        {{__('login.no_account')}}
-        <a href="/register" class="text-center text-sm text-blue-600">
-            {{__('login.create_account')}}
-        </a>
-    </p>
-
+    @if (session('status'))
+        <div class="mb-4 font-medium text-sm text-green-600">
+            {{ session('status') }}
+        </div>
+    @endif
 </section>
 </body>
 </html>
