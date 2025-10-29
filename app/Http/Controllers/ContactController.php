@@ -125,6 +125,26 @@ class ContactController extends Controller
             'avatar' => 'nullable|image',
         ]);
 
+
+        //make diff avatar sizes
+        if ( $request->hasFile('avatar')) {
+            $new_original_file_name = uniqid() . '.' . config('contactavatar.jpg_image_type');
+
+            $full_path_to_original = Storage::putFileAs(
+                config('contactavatar.originals_path'),
+                $validated_data['avatar'],
+                $new_original_file_name);
+
+            $validated_data['avatar'] = $new_original_file_name;
+
+            if ($full_path_to_original) {
+                ProcessUploadContactAvatar::dispatch($full_path_to_original, $new_original_file_name);
+            } else {
+                $validated_data['avatar'] = '';
+            }
+        }
+
+        
         // update et insert
         $contact->upsert(
             [
