@@ -13,4 +13,5 @@ return [
     'complete_name'=>'Complete name',
     'contact_list'=>'Contact list',
     'avatar_of'=>'Avatar of ',
+    'total_contacts'=>'Total contacts',
 ];

@@ -19,4 +19,5 @@ return [
     'evaluators'=>"Evaluator",
     'evaluated'=>"Evaluated",
     'modify_a_project' => 'Save',
+    'filter' => 'Filter',
 ];

@@ -5,6 +5,19 @@
         <h1 class="font-bold text-4xl pb-20">
             {{__('project.project_list')}}
         </h1>
+
+
+        <div class="statistics flex flex-row gap-10 mb-20">
+            <section class="py-24 bg-white rounded-2xl shadow-2xl min-w-80 max-w-80 text-center">
+                <h2 class="font-bold text-xl ">
+                    {{__('project.total_projects')}}
+                </h2>
+                <p>
+                    {!! $projectnumber->count() !!}
+                </p>
+            </section>
+        </div>
+
         <table class=" px-4 mt-4 shadow-xl rounded-2xl">
             <thead class="bg-cyan-700 text-white">
             <tr class="">

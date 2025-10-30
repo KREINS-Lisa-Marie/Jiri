@@ -34,7 +34,7 @@ class JiriController extends Controller
         //$jiri = request()->user()->jiris()->create();
 
         //  kann auch private f° damit machen
-        if (! empty($validated['projects'])) {
+        if (!empty($validated['projects'])) {
             $jiri->projects()->attach($validated['projects']);
         }
 
@@ -43,7 +43,7 @@ class JiriController extends Controller
                 }*/
 
         //  kann auch private f° damit machen
-        if (! empty($validated['contacts'])) {
+        if (!empty($validated['contacts'])) {
             foreach ($validated['contacts'] as $id => $contact) {
                 $jiri
                     ->contacts()
@@ -62,8 +62,6 @@ class JiriController extends Controller
         return redirect(route('jiris.index'));
         // to_route('jiris.index');
     }
-
-
 
 
     public function index(Request $request)
@@ -90,25 +88,59 @@ class JiriController extends Controller
             $sort = 'name';
         }
 
+        /*        $jiris = $user->jiris()
+                    ->orderBy($sort, $order)
+                    ->with(['projects', 'evaluated', 'evaluators'])
+                    ->get();*/
+        /*      $jiris = $user->jiris()
+                  ->orderBy($sort, $order)
+                  ->with(['projects', 'evaluated', 'evaluators'])
+                  ->paginate(3);*/
 /*        $jiris = $user->jiris()
             ->orderBy($sort, $order)
             ->with(['projects', 'evaluated', 'evaluators'])
-            ->get();*/
-  /*      $jiris = $user->jiris()
-            ->orderBy($sort, $order)
-            ->with(['projects', 'evaluated', 'evaluators'])
-            ->paginate(3);*/
-
-        $jiris = $user->jiris()
-            ->orderBy($sort, $order)
-            ->with(['projects', 'evaluated', 'evaluators'])
             ->paginate($perPage = 3, $columns = ['*'], $pageName = 'jiris'
-            );
-
+            );*/
         //$jiris->paginate(3);
 
+        $jiris = $user->jiris()
+            ->with(['projects', 'evaluated', 'evaluators'])     //fait du eager loading
 
-        return View('jiris.index', compact('jiris', 'user', 'order', 'sort'));
+            ->when($request->project_id, function($query) use ($request) {
+                $query->whereHas('projects', function($q) use ($request) {
+                    $q->where('projects.id', $request->project_id);
+                });
+            })
+            ->when($request->start_date, fn($query) => $query->whereDate('date', '>=', $request->start_date))
+            ->when($request->end_date, fn($query) => $query->whereDate('date', '<=', $request->end_date))
+            ->orderBy($sort, $order)            //trier
+            ->paginate(3, ['*'], 'jiris');          //paginer
+
+
+        //recuperer les projets et contacts de mon user
+        $projects = $user->projects()->get();
+        $contacts = $user->contacts()->get();
+
+        //recuperer les jiris de mon user
+        $jirinumber = $user->jiris();
+
+
+        /*$all_jiris = Jiri::with('projects')->get();
+        //dd($all_jiris);
+        foreach ($all_jiris as $jiri) {
+            if ($request->filled('project_id')) {
+                $all_jiris->whereHas('projects', function ($q) use ($request) {
+                    $q->where('projects.id', $request->project_id);
+                });
+
+            }
+            $filtered_jiris = $jiri->get();
+        }*/
+        //$filterevaluated = $contacts->where('role', 'evaluator');
+        //  $activeUsers = $contacts->where('role', 'evaluator');
+
+
+        return View('jiris.index', compact('jiris', 'user', 'order', 'sort', 'projects', 'contacts', 'jirinumber'));
     }
 
     public function show(Jiri $jiri, Request $request)
@@ -118,7 +150,6 @@ class JiriController extends Controller
         if ($jiri->user_id !== $user->id) {
             abort(403);
         }
-
 
 
         $sort = $request->get('sort', 'name'); // default sort column
