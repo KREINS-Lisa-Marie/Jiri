@@ -30,11 +30,13 @@ class ProjectController extends Controller
             ->paginate($perPage = 3, $columns = ['*'], $pageName = 'projects'
             );
 
+
+        $projectnumber= $user->projects();
         //$projects = Project::all();
         /*$projects = Project::paginate($perPage = 3, $columns = ['*'], $pageName = 'projects'
         );*/
 
-        return view('projects.index', compact('projects', 'sort', 'order'));
+        return view('projects.index', compact('projects', 'sort', 'order', 'projectnumber'));
     }
 
     public function store(StoreProjectRequest $request, Project $project)

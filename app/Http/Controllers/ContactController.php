@@ -39,12 +39,14 @@ class ContactController extends Controller
             ->paginate($perPage = 3, $columns = ['*'], $pageName = 'contacts'
             );
 
+        $contactnumber= $user->projects();
+
     /*    $contacts = Auth::user()->contacts()
             ->paginate($perPage = 3, $columns = ['*'], $pageName = 'contacts'
         );*/
 
 
-        return view('contacts.index', compact('contacts', 'sort', 'order'));
+        return view('contacts.index', compact('contacts', 'sort', 'order', 'contactnumber'));
     }
 
     public function store(StoreContactRequest $request): RedirectResponse
@@ -144,7 +146,7 @@ class ContactController extends Controller
             }
         }
 
-        
+
         // update et insert
         $contact->upsert(
             [

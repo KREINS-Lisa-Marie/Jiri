@@ -8,4 +8,5 @@ return [
     'projectname' => 'Name of the project',
     'project_list' => 'List of the projects',
     'create_a_new_project' => 'Create a new project',
+    'total_projects' => 'Total projects',
 ];

@@ -23,4 +23,9 @@ return [
     'evaluators' => 'Evaluators',
     'evaluated' => 'Evaluated',
     'filter' => 'Filter',
+    'total_projects_to_evaluate' => 'Total projects to evaluate',
+    'total_contacts'=>'Total contacts',
+    'total_jiris'=>'Total Jiris',
+    'end_date'=>'End date',
+    'start_date'=>'Start date',
 ];

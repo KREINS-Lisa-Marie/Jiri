@@ -1,8 +1,8 @@
 @component('layouts.app')
-<body>
+<body class="bg-gray-100 pb-20">
 <section class="project_section px-6 py-6 flex items-center flex-col">
 @if ($jiris->isNotEmpty() && $user)
-    <div class="block text-center">
+        <div class="block text-center">
         <h1 class="font-bold text-4xl pb-20">
             {{__('jiri.jiri_list_of')}}{{$user->name}}</h1>
         {{-- <ol>
@@ -18,20 +18,113 @@
          </ol>
 
      --}}
+        <div class="statistics flex flex-row gap-10 mb-20">
+            <section class="py-24 bg-white rounded-2xl shadow-2xl min-w-80 max-w-80">
+                <h2 class="font-bold text-xl">
+                    {{__('jiri.total_jiris')}}
+                </h2>
+                <p>
+                    {!! $jirinumber->count() !!}
+                </p>
+            </section>
+            <section class="py-24 bg-white rounded-2xl shadow-2xl min-w-80 max-w-80">
+                <h2 class="font-bold text-xl">
+                    {{__('jiri.total_contacts')}}
+                </h2>
+                <p>
+                    {!! $contacts->count() !!}
+                </p>
+            </section>
+            <section class=" py-24 bg-white rounded-2xl shadow-2xl min-w-80 max-w-80">
+                <h2 class="font-bold text-xl">
+                    {{__('jiri.total_projects_to_evaluate')}}
+                </h2>
+                <p>
+                    {!! $projects->count() !!}
+                </p>
+            </section>
+        </div>
+            <div class="my-20">
+                <a href="{{ route('jiris.create') }}"
+                   class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl"
+                   title="aller vers le site 'Créer un jiri'">
+                    {{__('jiri.create_a_jiri')}}
+                </a>
+            </div>
+        <div class="flex justify-center items-center gap-10">
 
-        <div class="flex justify-between">
-            <a href="{{ route('jiris.create') }}"
-                 class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl"
-                 title="aller vers le site 'Créer un jiri'">
-            {{__('jiri.create_a_jiri')}}
-            </a>
-            <a href="" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl">
+{{--            <a href="" class="text-white font-bold px-10 py-5 shadow-xl bg-cyan-700  rounded-2xl">
                 {{__('jiri.filter')}}
             </a>
+            <a href="">
+
+            </a>--}}
+            {{-- Filter Form --}}
+   {{--         <form method="GET" action="{{ route('jiris.index') }}" class="mb-4">
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                        <label for="project_id" class="col-form-label">
+                            Filter by Project:
+                        </label>
+                    </div>
+                    <div class="col-auto">
+                        <select name="project_id" id="project_id" class="form-select" onchange="this.form.submit()">
+                            <option value="">
+                                All Projects
+                            </option>
+                            @foreach ($projects as $project)
+                                <option value="{{ $project->id }}" {{ request('project_id') == $project->id ? 'selected' : '' }}>
+                                    {{ $project->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </form>--}}
+            <form method="GET" action="{{ route('jiris.index') }}" class="mb-6 flex flex-col md:flex-row gap-4 items-center">
+                <!-- Filtrer les projets -->
+                <div>
+                    <label for="project_id" class="font-semibold">Filter by Project:</label>
+                    <select name="project_id" id="project_id" class="form-select" onchange="this.form.submit()">
+                        <option value="">
+                            All Projects
+                        </option>
+                        @foreach ($projects as $project)
+                            <option value="{{ $project->id }}" {{ request('project_id') == $project->id ? 'selected' : '' }}>
+                                {{ $project->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </form>
+
+
+            <form method="GET" action="{{ route('jiris.index') }}" class="mb-6 flex flex-col md:flex-row gap-4 items-center">
+                    <div class="text_field pb-5 flex flex-col">
+                        <label for="date" class="font-bold pb-2" >
+                            {{__('jiri.start_date')}}
+                        </label>
+                        <input type="date" name="start_date" id="date" value="{{request('start_date')}}" class="bg-white rounded-xl p-2">
+                        @error('date')
+                        {{$message}}
+                        @enderror
+                    </div>
+
+                    <div class="text_field pb-5 flex flex-col">
+                        <label for="date" class="font-bold pb-2" >
+                            {{__('jiri.end_date')}}
+                        </label>
+                        <input type="date" name="end_date" id="date" value="{{request('end_date')}}" class="bg-white rounded-xl p-2">
+                        @error('date')
+                        {{$message}}
+                        @enderror
+                    </div>
+                @component('components.button')
+                        {{__('labels-buttons.filter')}}
+                    @endcomponent
+            </form>
         </div>
     </div>
-    <br>
-    <br>
     <section class="flex flex-col p-10 items-center">
         <table class="rounded-2xl max-w-200 shadow-2xl">
             <thead class=" bg-cyan-700 text-white">
