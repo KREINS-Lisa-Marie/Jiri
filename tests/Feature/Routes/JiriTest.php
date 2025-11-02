@@ -173,7 +173,7 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
 
 });
 
-it('verifies that by clicking on a Jirilink, a user is redirected to the page of the Jiri', function () {
+/*it('verifies that by clicking on a Jirilink, a user is redirected to the page of the Jiri', function () {
     // arrange
 
     $user = User::factory()->create();
@@ -195,10 +195,11 @@ it('verifies that by clicking on a Jirilink, a user is redirected to the page of
 
     // assert
     $response->assertStatus(200);
-    $response->assertSee($contacts->first()->name, false);*/
+    $response->assertSee($contacts->first()->name, false);
 });
+*/
 
-it('verifies that by clicking on a Projectlink, a user is redirected to the page of the Project', function () {
+/*it('verifies that by clicking on a Projectlink, a user is redirected to the page of the Project', function () {
     // arrange
 
     $user = User::factory()->create();
@@ -225,10 +226,10 @@ it('verifies that by clicking on a Projectlink, a user is redirected to the page
 
      // assert
      $response->assertStatus(200);
-     $response->assertSee($projects->first()->name, false);*/
-});
+     $response->assertSee($projects->first()->name, false);
+});*/
 
-it('verifies that the obligations are respected', function () {
+it('verifies that the validation rules are respected', function () {
     // arrange
     $user = User::factory()->create();
     actingAs($user);

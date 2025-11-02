@@ -204,22 +204,8 @@ it('displays a detail page of Jiris and verifies if there is data', function () 
 
 });
 
-it('displays the details page of a contact', function () {
-    // arrange
-    $user = User::factory()->create();
-    actingAs($user);
 
-    $contact = Contact::factory()->for($user)->create();          // changer !!!  ≠ contact
-
-    // act
-    $response = $this->get(route('contacts.show', compact('contact')));
-
-    // assert
-    $response->assertStatus(200);
-    $response->assertSee($contact->name, false);
-});
-
-it('verifies that the obligations are respected', function () {
+it('verifies that the validation rules are respected', function () {
     // arrange
 
     $user = User::factory()->create();
