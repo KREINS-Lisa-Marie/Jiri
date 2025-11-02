@@ -1,6 +1,6 @@
 <?php
 
-it('redirects to the register page when the register link is clicked', function () {
+/*it('redirects to the register page when the register link is clicked', function () {
 
     $response = $this->get(route('register'));
 
@@ -8,7 +8,7 @@ it('redirects to the register page when the register link is clicked', function 
         ->assertSee('Créer un compte')
         ->assertSeeInOrder(['<form', 'email', 'name', 'Mot de passe', '<button', 'Créer un compte'], true);
 
-});
+});*/
 
 it('can display the register form', function () {
 

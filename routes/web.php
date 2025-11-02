@@ -94,9 +94,10 @@ Route::get('projects/', [ProjectController::class, 'index'])->name('projects.ind
 Route::get('projects/create', [ProjectController::class, 'create'])->name('projects.create')->middleware([
     'auth',
 ]);
-/*Route::get('projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit')->middleware([
+
+Route::get('projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit')->middleware([
     'auth',
-    'can:update, project',
+    'can:update,project'
 ]);
 
 Route::get('projects/{project}', [ProjectController::class, 'show'])
@@ -110,13 +111,13 @@ Route::patch('projects/{project}', [ProjectController::class, 'update'])->name('
     'auth',
     'can:update,project',
 ]);
-
-Route::post('projects/store', [ProjectController::class, 'store'])->name('projects.store')->middleware([
+Route::post('projects/', [ProjectController::class, 'store'])->name('projects.store')->middleware([
     'auth',
-]);*/
+    // 'can:store,contact'
+]);
 
 
-Route::resource('projects', ProjectController::class);
+//Route::resource('projects', ProjectController::class);
 
 Route::resource('users', UserController::class);
 

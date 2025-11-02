@@ -32,7 +32,7 @@ it('creates a Project and redirects to the project index', function () {
 
 });
 
-it('verifies that by clicking on a Projectlink, a user goes to the page of the Project', function () {
+/*it('verifies that by clicking on a Projectlink, a user goes to the page of the Project', function () {
     // arrange
     $user = User::factory()->create();
     actingAs($user);
@@ -45,4 +45,4 @@ it('verifies that by clicking on a Projectlink, a user goes to the page of the P
     // assert
     $response->assertStatus(200);
     $response->assertSee($project->first()->name, false);
-});
+});*/

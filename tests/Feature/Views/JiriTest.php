@@ -35,3 +35,19 @@ it(
 
     }
 );*/
+
+it(
+    'verifies that the jiris.edit route displays a form to modify a jiri',
+    function () {
+        Event::fake();
+
+        $user = User::factory()->create();
+        actingAs($user);
+
+        $jiri = \App\Models\Jiri::factory()->for($user)->create();
+
+        $response = get(route('jiris.edit', $jiri->id));
+
+        $response->assertStatus(200)
+        ->assertSee('Modifier le jiri');
+    });

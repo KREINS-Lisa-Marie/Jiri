@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Jiri;
+use App\Models\Project;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -39,6 +40,17 @@ it('verifies that a user who is not connected can not access to the jiris page',
 });
 
 //it('verifies that the connected user is redirected to the jiris index page when accessing the login page and that the guest ist redirected to the login page when accessing the jiris index page', function () {});
+
+it('verifies that the connected user is redirected to the jiris index page when accessing the login page', function (){
+
+    $user = User::factory()->create();
+    actingAs($user);
+
+    $response = $this->get(route('login'));
+
+    $response->assertStatus(302)
+        ->assertRedirect(route('jiris.index'));
+});
 
 it('verifies if that a guest cannot access the jiri page', function () {
 
@@ -87,6 +99,54 @@ it('verifies that a user cannot modify a jiri from another user', function () {
         ->create();
 
     $response = $this->get(route('jiris.edit', ['jiri' => $jiri2]));
+
+    // faut faire policies
+
+    $response->assertStatus(403);
+    // ->assertSee();
+
+});
+it('verifies that a user cannot modify a projects from another user', function () {
+
+    //Event::fake();
+
+    $user = User::factory()->create();
+    $user2 = User::factory()->create();
+    actingAs($user);
+
+    $project = Project::factory()
+        ->for($user)
+        ->create();
+
+    $project2 = Project::factory()
+        ->for($user2)
+        ->create();
+
+    $response = $this->get(route('projects.edit', ['project' => $project2]));
+
+    // faut faire policies
+
+    $response->assertStatus(403);
+    // ->assertSee();
+
+});
+it('verifies that a user cannot modify a contacts from another user', function () {
+
+    //Event::fake();
+
+    $user = User::factory()->create();
+    $user2 = User::factory()->create();
+    actingAs($user);
+
+    $contact = \App\Models\Contact::factory()
+        ->for($user)
+        ->create();
+
+    $contact2 = \App\Models\Contact::factory()
+        ->for($user2)
+        ->create();
+
+    $response = $this->get(route('contacts.edit', ['contact' => $contact2]));
 
     // faut faire policies
 

@@ -65,3 +65,18 @@ it('allows to see a contact edit page for a connected user', function () {
     $response->assertStatus(200);
     $response->assertSee($contact->name);
 });
+
+it('displays the details page of a contact', function () {
+    // arrange
+    $user = User::factory()->create();
+    actingAs($user);
+
+    $contact = Contact::factory()->for($user)->create();          // changer !!!  ≠ contact
+
+    // act
+    $response = $this->get(route('contacts.show', compact('contact')));
+
+    // assert
+    $response->assertStatus(200);
+    $response->assertSee($contact->name, false);
+});
